@@ -1,14 +1,6 @@
-<script typo="text/javascript">
-	function excluir(id)
-	{
-		$("#button-confirmar").attr("href", root+"usuario/excluir/"+id);
-		$('#usuario-confirmacao').modal('show');
-	}
-
-</script>
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
-		<h1>Usuários <a href="~/unidade"><small>Lista</small></a></h1>
+		<h1>Usuários <a href="~/usuario"><small>Lista</small></a></h1>
 	</div>
 </div>
 <div class="grid_12">
@@ -32,14 +24,14 @@
                 <th>Nome</th>
                 <th>Telefone</th>
 				 <th>Status</th>
-                <th colspan="4" style="text-align: center;">Ações</th>
+                <th colspan="5" style="text-align: center;">Ações</th>
             </tr>
         </thead>
         <tbody>
             <?php if (is_array($usuarios->Dados)): ?>
                 <?php foreach ($usuarios->Dados as $usuario): ?>
                     <tr>
-                        <td style="width: 500px;"><?= $usuario->Nome ?></td>
+                        <td style="width: 300px;"><?= $usuario->Nome ?></td>
                         <td><?= $usuario->Telefone ?></td>
 						<td style="width: 30px;">
 							<?php if ($usuario->Bloqueado == 0): ?>
@@ -51,9 +43,16 @@
                         <td style="width: 30px;">
                             <a href="~/usuario/editar/<?= $usuario->Id ?>" class="btn btn-primary tool_tip" rel="tooltip" title="Editar"> <i class="icon-pencil icon-white"></i></a>
                         </td>
-                        <td style="width: 30px;"><a href="javascript:void(0)" onclick="excluir(<?= $usuario->Id ?>)" class="btn btn-danger tool_tip" rel="tooltip" title="Excluir"> <i class="icon-trash icon-white"></i></a></td>
+                        <td style="width: 30px;"><a href="javascript:void(0)" onclick="modal(<?= $usuario->Id ?>,'usuario/excluir/','Tem certeza que deseja excluir o Usuário?')" class="btn btn-danger tool_tip" rel="tooltip" title="Excluir"> <i class="icon-trash icon-white"></i></a></td>
                         <td style="width: 30px;"><a href="~/usuario/v/<?= $usuario->Id ?>" class="btn btn-success tool_tip" rel="tooltip" title="Vincular usuário"> <i class="icon-resize-small icon-white"></i></a></td>
-                    </tr>
+						<?php if ($usuario->EhAdmin == 1): ?>
+						<td style="width: 30px;"><a href="javascript:void(0)" class="btn btn-success tool_tip disabled" rel="tooltip" title="É Usuário Administrador do Sistema">Administrador</a></td>
+						<td style="width: 30px;"><a href=<?= root_virtual."usuario/alterar_permissao_sistema/".$usuario->Id?> class="btn btn-primary tool_tip" rel="tooltip" title="Clique para torná-lo Comum">Comum</a></td>
+						<?php else: ?>
+						<td style="width: 30px;"><a href=<?= root_virtual."usuario/alterar_permissao_sistema/".$usuario->Id?> class="btn btn-primary tool_tip" rel="tooltip" title="Clique para torná-lo Administrador">Administrador</a></td>
+						<td style="width: 30px;"><a href="javascript:void(0)" class="btn btn-success tool_tip disabled" rel="tooltip" title="É Usuário Comum do Sistema">Comum</a></td>
+						<?php endif ?>
+					</tr>
                 <?php endforeach ?>
             <?php else: ?>
                 <tr>
@@ -65,19 +64,4 @@
 </div>
 <div class="grid_12" style="text-align: center;">
     <?= Pagination::create('usuario/index/', $usuarios->Total, $p) ?>
-</div>
-
-
-<div class="modal hide" id="usuario-confirmacao">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3 class="cliente-nome">CONFIRMAÇÃO</h3>
-    </div>
-    <div class="modal-body">
-        Tem certeza que deseja excluir o Usuário?
-    </div>
-    <div class="modal-footer">
-        <a href="javascript:void(0);" class="btn" data-dismiss="modal">Cancelar</a>
-        <a class="btn btn-primary" id="button-confirmar">OK</a>
-    </div>
 </div>

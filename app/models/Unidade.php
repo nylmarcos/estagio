@@ -60,4 +60,9 @@ class Unidade extends Model {
         }
         return $resultado;
     }
+	
+	public static function all() {
+		$bd = Database::getInstance();
+        return $bd->Unidade->orderby('Nome ASC')->all();
+    }
 }

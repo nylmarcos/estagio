@@ -39,8 +39,13 @@
 						<td style="width: 30px;">
 							<a href="~/unidade/excluir/<?= $usuario->IdUsuarioUnidade ?>" class="btn btn-danger tool_tip" rel="tooltip" title="Excluir Vinculo"> <i class="icon-trash icon-white"></i></a>
 						</td>
-						<td style="width: 30px;"><a href=<?= $usuario->Permissao == 2 ? "javascript:void(0)" : root_virtual."unidade/alterar_permissao/".$usuario->IdUsuarioUnidade ?> class="btn btn-danger tool_tip <?= $usuario->Permissao == 2 ? "disabled" : ""; ?> rel="tooltip" title="Administrador">Administrador</a></td>
-						<td style="width: 30px;"><a href=<?= $usuario->Permissao == 3 ? "javascript:void(0)" : root_virtual."unidade/alterar_permissao/".$usuario->IdUsuarioUnidade ?> class="btn btn-success tool_tip <?= $usuario->Permissao == 3 ? "disabled" : ""; ?> rel="tooltip" title="comunn">Comum</a></td>
+						<?php if ($usuario->Permissao == 2): ?>
+						<td style="width: 30px;"><a href="javascript:void(0)" class="btn btn-success tool_tip disabled" rel="tooltip" title="Administrador">Administrador</a></td>
+						<td style="width: 30px;"><a href=<?= root_virtual."unidade/alterar_permissao/".$usuario->IdUsuarioUnidade ?> class="btn btn-primary tool_tip" rel="tooltip" title="comunn">Comum</a></td>
+						<?php else: ?>
+						<td style="width: 30px;"><a href=<?= root_virtual."unidade/alterar_permissao/".$usuario->IdUsuarioUnidade ?> class="btn btn-primary tool_tip" rel="tooltip" title="Administrador">Administrador</a></td>
+						<td style="width: 30px;"><a href="javascript:void(0)" class="btn btn-success tool_tip disabled" rel="tooltip" title="comunn">Comum</a></td>
+						<?php endif ?>
 					</tr>
 				<?php endforeach ?>
 			<?php else: ?>

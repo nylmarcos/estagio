@@ -22,15 +22,32 @@ class Usuariounidade extends Model {
 		$bd = Database::getInstance();
 		return $bd->Usuariounidade->where('Id = ?', $Id)->single();
 	}
-
+	public static function getByUsuario($idUsuario,$permissao = null) {
+		$bd = Database::getInstance();
+		if($permissao)
+			return $bd->Usuariounidade->where('IdUsuario = ? AND Permissao = ?', $idUsuario, $permissao)->all();
+		else
+			return $bd->Usuariounidade->where('IdUsuario = ?', $idUsuario)->all();
+	}
+	public static function getByUnidade($idUnidade,$permissao = null) {
+		$bd = Database::getInstance();
+		if($permissao)
+			return $bd->Usuariounidade->where('IdUnidade = ? AND Permissao = ?', $idUnidade, $permissao)->all();
+		else
+			return $bd->Usuariounidade->where('IdUnidade = ?', $idUnidade)->all();
+	}
+	public static function virificar_permissao($idUnidade,$idUsurio) {
+		$bd = Database::getInstance();
+		return $bd->Usuariounidade->where('IdUnidade = ? AND IdUsuario = ?', $idUnidade, $idUsurio)->all();
+	}
 	public static function excluir(Usuariounidade $usuariounidade) {
 		$bd = Database::getInstance();
 		$bd->Usuariounidade->delete($usuariounidade);
 		$bd->save();
 	}
-	public static function excluirAllByIdUnidade($idunidade) {
+	public static function excluirAllByIdUnidade($idUnidade) {
 		$bd = Database::getInstance();
-		$bd->Usuariounidade->where('IdUnidade = ?', $idunidade)->deleteAll();;
+		$bd->Usuariounidade->where('IdUnidade = ?', $idUnidade)->deleteAll();;
 		$bd->save();
 	}
 

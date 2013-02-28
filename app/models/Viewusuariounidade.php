@@ -53,4 +53,19 @@ class Viewusuariounidade extends Model {
         }
         return $resultado;
     }
+	
+	public static function allByIdUsuario($IdUsuario, $permissao = NULL) {
+		$bd = Database::getInstance();
+		if($permissao)
+			return $bd->Viewusuariounidade->where('IdUsuario = ? AND Permissao', $IdUsuario, $permissao)->all();
+		else
+			return $bd->Viewusuariounidade->where('IdUsuario = ?', $IdUsuario)->all();
+    }
+	public static function allByIdUnidade($IdUnidade, $permissao = NULL) {
+		$bd = Database::getInstance();
+		if($permissao)
+			return $bd->Viewusuariounidade->where('IdUnidade = ? AND Permissao = ?', $IdUnidade, $permissao)->all();
+		else
+			return $bd->Viewusuariounidade->where('IdUnidade = ?', $IdUnidade)->all();
+    }
 }

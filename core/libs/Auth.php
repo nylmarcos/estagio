@@ -77,7 +77,7 @@ class Auth
 			if(!self::isLogged())
 			{
 				$location = preg_match('@^~/@', Config::get('default_login')) ? ROOT_VIRTUAL . trim(Config::get('default_login'), '~/') : Config::get('default_login');
-				header('Location: '. $location);
+				header('Location: '. $location . '?forwarded=' . urlencode(str_replace(SITE_URL, '', URL)));
 				exit;
 			}
 			throw new AuthException('Você não tem permissão para acessar essa página', 403);

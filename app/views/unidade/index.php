@@ -1,11 +1,3 @@
-<script typo="text/javascript">
-	function excluir(id)
-	{
-		$("#button-confirmar").attr("href", root+"unidade/excluir/"+id);
-		$('#unidade-confirmacao').modal('show');
-	}
-
-</script>
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
 		<h1>Unidades <a href="~/unidade"><small>Lista</small></a></h1>
@@ -44,7 +36,7 @@
                         <td style="width: 30px;">
                             <a href="~/unidade/editar/<?= $unidade->Id ?>" class="btn btn-primary tool_tip" rel="tooltip" title="Editar"> <i class="icon-pencil icon-white"></i></a>
                         </td>
-                        <td style="width: 30px;"><a href="javascript:void(0)" onclick="excluir(<?= $unidade->Id ?>)" class="btn btn-danger tool_tip" rel="tooltip" title="Excluir"> <i class="icon-trash icon-white"></i></a></td>
+                        <td style="width: 30px;"><a href="javascript:void(0)" onclick="modal(<?= $unidade->Id ?>,'unidade/excluir/','Tem certeza que deseja excluir a Unidade? ')" class="btn btn-danger tool_tip" rel="tooltip" title="Excluir"> <i class="icon-trash icon-white"></i></a></td>
                         <td style="width: 30px;"><a href="~/unidade/visualizar/<?= $unidade->Id ?>" class="btn btn-success tool_tip" rel="tooltip" title="Visualizar"> <i class="icon-eye-open icon-white"></i></a></td>
                     </tr>
                 <?php endforeach ?>
@@ -58,19 +50,4 @@
 </div>
 <div class="grid_12" style="text-align: center;">
     <?= Pagination::create('unidade/index/', $unidades->Total, $p) ?>
-</div>
-
-
-<div class="modal hide" id="unidade-confirmacao">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3 class="cliente-nome">CONFIRMAÇÃO</h3>
-    </div>
-    <div class="modal-body">
-        Tem certeza que deseja excluir a Unidade?
-    </div>
-    <div class="modal-footer">
-        <a href="javascript:void(0);" class="btn" data-dismiss="modal">Cancelar</a>
-        <a class="btn btn-primary" id="button-confirmar">OK</a>
-    </div>
 </div>

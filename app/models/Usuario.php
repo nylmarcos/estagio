@@ -46,6 +46,16 @@ class Usuario extends Model {
      * @Required() 
      */
     public $Bloqueado;
+	
+	/** @Column(Type="Int") 
+     * @Required() 
+     */
+    public $ReceberEmailNovaCI;
+	
+	/** @Column(Type="Int") 
+     * @Required() 
+     */
+    public $ReceberEmailNovaObs;
 
     public static function get($Id) {
         $bd = Database::getInstance();
@@ -86,5 +96,10 @@ class Usuario extends Model {
             $resultado->Total = $bd->Usuario->count();
         }
         return $resultado;
+    }
+	
+	public static function all() {
+		$bd = Database::getInstance();
+        return $bd->Usuario->orderby('Nome ASC')->all();
     }
 }

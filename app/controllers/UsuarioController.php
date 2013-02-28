@@ -17,6 +17,7 @@ class UsuarioController extends Controller {
 		$this->_set('s', $s);
 		return $this->_view();
 	}
+	
 
 	public function cadastrar() {
 		$usuario = new Usuario();
@@ -43,7 +44,18 @@ class UsuarioController extends Controller {
 		$this->_set('usuario', $usuario);
 		return $this->_view();
 	}
-
+	public function alterar_permissao_sistema($id){
+		$usuario = Usuario::get($id);
+		if ($usuario) {
+			$usuario->EhAdmin = $usuario->EhAdmin == 1 ? 0 : 1;
+			Usuario::salvar($usuario);
+			$this->_flash('alert alert-success fade in', 'Permissão do usuário no sistema foi alterada com sucesso');
+		}
+		else{
+			$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a permissão do usuario no sistema');
+		}
+		$this->_redirect('~/usuario/');
+	}
 	public function editar($id) {
 		$usuario = Usuario::get($id);
 		if ($usuario) {
@@ -63,7 +75,7 @@ class UsuarioController extends Controller {
 					} catch (ValidationException $e) {
 						$this->_flash('alert alert-error fade in', $e->getMessage());
 					} catch (Exception $e) {
-						$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a usuario');
+						$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a usuário');
 					}
 				}
 			}
@@ -152,5 +164,24 @@ class UsuarioController extends Controller {
         }
         return $this->_view();
     }
-
+	public function bloquear_desbloquear($idUsuario) {
+		$usuario = Usuario::get($idUsuario);
+		if ($usuario) {
+			try {
+				$usuario->Bloqueado = $usuario->Bloqueado ? 0 : 1;
+				Usuario::salvar($usuario);
+				if($usuario->Bloqueado){
+					$this->_flash('alert alert-success fade in', 'Usuário bloqueado com sucesso!');
+				}else{
+					$this->_flash('alert alert-success fade in', 'Usuário desbloqueado com sucesso!');
+				}
+				
+				$this->_redirect('~/usuario');
+			} catch (Exception $e) {
+				$this->_flash('erro', 'Erro ao tentar bloquear ou desbloquear usuário!');
+			}
+		} else {
+			$this->_flash('erro', 'Usuário não encontrado!');
+		}
+	}
 }

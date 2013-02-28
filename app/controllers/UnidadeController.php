@@ -67,7 +67,7 @@ class UnidadeController extends Controller {
                 $this->_flash('alert alert-success fade in', 'Unidade excluída com sucesso!');
                 $this->_redirect('~/unidade/');
             } catch (Exception $e) {
-                pre($e);
+                //pre($e);
                 $this->_flash('alert alert-error fade in', 'Erro ao tentar excluir unidade!');
             }
         } else {

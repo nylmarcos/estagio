@@ -1,11 +1,3 @@
-<script typo="text/javascript">
-	function excluir(id)
-	{
-		$("#button-confirmar").attr("href", root+"usuario/excluir_vinculo/"+id);
-		$('#vinculo-confirmacao').modal('show');
-	}
-
-</script>
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
 		<h1>Vincular <small><?= $usuario->Nome ?></small></h1>
@@ -41,10 +33,10 @@
 						<td style="width: 500px;"><?= $unidade->NomeUnidade ?></td>
 							<td><?= $unidade->TelefoneUnidade ?></td>
 						<?php if ($unidade->IdUsuario == $usuario->Id): ?>
-							<td style="width: 30px;"><a href="javascript:void(0);" onclick="excluir(<?= $unidade->IdUsuarioUnidade ?>)" class="btn btn-danger tool_tip" rel="tooltip" title="Excluir vinculo"> <i class="icon-trash icon-white"></i></a></td>
+							<td style="width: 30px;"><a href="javascript:void(0);" onclick="modal(<?= $unidade->IdUsuarioUnidade ?>,'usuario/excluir_vinculo/','Tem certeza que deseja excluir vinculo?')" class="btn btn-danger tool_tip" rel="tooltip" title="Excluir vinculo"> <i class="icon-trash icon-white"></i></a></td>
 							<?php if ($unidade->Permissao == 2): ?>
-								<td style="width: 30px;"><a href="javascript:void(0);" class=" btn btn-primary tool_tip disabled" rel="tooltip" title="">Administrador</a></td>
-								<td style="width: 30px;"><a href="~/usuario/alterar_permissao/<?= $unidade->IdUsuarioUnidade ?>" class=" btn btn-success tool_tip " rel="tooltip" title="Comum">Comum</a></td>
+								<td style="width: 30px;"><a href="javascript:void(0);" class=" btn btn-success tool_tip disabled" rel="tooltip" title="">Administrador</a></td>
+								<td style="width: 30px;"><a href="~/usuario/alterar_permissao/<?= $unidade->IdUsuarioUnidade ?>" class=" btn btn-primary tool_tip " rel="tooltip" title="Comum">Comum</a></td>
 							<?php else: ?>
 								<td style="width: 30px;"><a href="~/usuario/alterar_permissao/<?= $unidade->IdUsuarioUnidade ?>" class=" btn btn-primary tool_tip" rel="tooltip" title="Administrador">Administrador</a></td>
 								<td style="width: 30px;"><a href="javascript:void(0);" class="btn btn-success tool_tip disabled" rel="tooltip" title="">Comum</a></td>
@@ -52,7 +44,7 @@
 						<?php else: ?>
 							<td style="width: 30px;"><a href="javascript:void(0);" class="btn btn-danger tool_tip disabled" rel="tooltip" title=""> <i class="icon-trash icon-white"></i></a></td>
 							<td style="width: 30px;"><a href="~/usuario/vincular/<?= $unidade->IdUnidade . '/' . $usuario->Id . '/2' ?>" class="btn btn-primary tool_tip" rel="tooltip" title="Clique para criar vincular"> Administrador </a></td>
-							<td style="width: 30px;"><a href="~/usuario/vincular/<?= $unidade->IdUnidade . '/' . $usuario->Id . '/3' ?>"  class="btn btn-success tool_tip" rel="tooltip" title="Clique para criar vincular"> Comum </a></td>
+							<td style="width: 30px;"><a href="~/usuario/vincular/<?= $unidade->IdUnidade . '/' . $usuario->Id . '/3' ?>"  class="btn btn-primary tool_tip" rel="tooltip" title="Clique para criar vincular"> Comum </a></td>
 						<?php endif ?>
 					</tr>
 				<?php endforeach ?>
@@ -66,19 +58,4 @@
 </div>
 <div class="grid_12" style="text-align: center;">
 	<?= Pagination::create('usuario/vincular/' . $usuario->Id, $unidades->Total, $p) ?>
-</div>
-
-
-<div class="modal hide" id="vinculo-confirmacao">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3 class="cliente-nome">CONFIRMAÇÃO</h3>
-    </div>
-    <div class="modal-body">
-        Tem certeza que deseja excluir vinculo?
-    </div>
-    <div class="modal-footer">
-        <a href="javascript:void(0);" class="btn" data-dismiss="modal">Cancelar</a>
-        <a class="btn btn-primary" id="button-confirmar">OK</a>
-    </div>
 </div>
