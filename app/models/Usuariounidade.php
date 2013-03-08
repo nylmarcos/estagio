@@ -36,13 +36,13 @@ class Usuariounidade extends Model {
 		else
 			return $bd->Usuariounidade->where('IdUnidade = ?', $idUnidade)->all();
 	}
-	public static function virificar_permissao($idUnidade,$idUsurio) {
+	public static function virificar_permissao($idUnidade,$idUsuario) {
 		$bd = Database::getInstance();
-		return $bd->Usuariounidade->where('IdUnidade = ? AND IdUsuario = ?', $idUnidade, $idUsurio)->all();
+		return $bd->Usuariounidade->where('IdUnidade = ? AND IdUsuario = ?', $idUnidade, $idUsuario)->all();
 	}
-	public static function excluir(Usuariounidade $usuariounidade) {
+	public static function excluir(Usuariounidade $UsuarioUnidade) {
 		$bd = Database::getInstance();
-		$bd->Usuariounidade->delete($usuariounidade);
+		$bd->Usuariounidade->delete($UsuarioUnidade);
 		$bd->save();
 	}
 	public static function excluirAllByIdUnidade($idUnidade) {

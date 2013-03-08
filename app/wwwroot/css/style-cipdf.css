@@ -1,0 +1,6 @@
+table.bordasimples {
+	border-collapse: collapse;
+border:1px solid #000;
+}
+
+table.bordasimples tr td {border:1px solid #000;}

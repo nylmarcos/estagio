@@ -50,12 +50,7 @@ class Usuario extends Model {
 	/** @Column(Type="Int") 
      * @Required() 
      */
-    public $ReceberEmailNovaCI;
-	
-	/** @Column(Type="Int") 
-     * @Required() 
-     */
-    public $ReceberEmailNovaObs;
+    public $ReceberEmail;
 
     public static function get($Id) {
         $bd = Database::getInstance();
@@ -77,10 +72,10 @@ class Usuario extends Model {
         $bd->save();
     }
 	
-	public static function logar($lodin_email, $senha)
+	public static function logar($login_email, $senha)
 	{
 		$bd = DataBase::getInstance();
-		return $bd->Usuario->where('Login_Email = ? AND Senha = ?', $lodin_email, $senha)->single();		
+		return $bd->Usuario->where('Login_Email = ? AND Senha = ?', $login_email, $senha)->single();		
 	}
 	
     public static function listar($p, $s) {
@@ -97,9 +92,9 @@ class Usuario extends Model {
         }
         return $resultado;
     }
-	
-	public static function all() {
-		$bd = Database::getInstance();
-        return $bd->Usuario->orderby('Nome ASC')->all();
-    }
+	public static function all()
+	{
+		$bd = DataBase::getInstance();
+		return $bd->Usuario->all();		
+	}
 }

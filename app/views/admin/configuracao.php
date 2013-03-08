@@ -18,14 +18,14 @@
 					<h4><small>Email</small></h4>
 				</div>
 				<label class="checkbox">
-					<input type="checkbox" value="1" <?= $usuario->ReceberEmailNovaCI ? "checked" :"" ?>  name="ReceberEmailNovaCI" />
-					Receber e-mail quando eu ou a(s) unidade(s) que estou alocado receber uma CI
+					<input type="checkbox" value="1" <?= $usuario->ReceberEmail ? "checked" :"" ?>  name="ReceberEmail" />
+					Receber e-mail quanto ao andamento das CIs que você tem vinculo
 				</label>
-				<label class="checkbox">
-					<input type="checkbox" value="1" <?= $usuario->ReceberEmailNovaObs ? "checked" :"" ?> name="ReceberEmailNovaObs" />
+				<!--<label class="checkbox">
+					<input type="checkbox" value="1"  name="ReceberEmailNovaObs" />
 					Receber e-mail quando adicionarem observação a CI que estou 
 				</label>
-				<!--
+				
 				<div class="page-header" style="margin-top: 2px; margin-bottom: 2px;">
 					<h4><small>SMS</small></h4>
 				</div>

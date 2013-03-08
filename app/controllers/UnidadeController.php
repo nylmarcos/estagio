@@ -88,8 +88,8 @@ class UnidadeController extends Controller {
         return $this->_view();
     }
 
-    public function excluir_vinculo($id) {
-        $usuariounidade = Usuariounidade::get($id);
+    public function excluir_vinculo($idUsuarioUnidade) {
+        $usuariounidade = Usuariounidade::get($idUsuarioUnidade);
         if ($usuariounidade) {
             try {
                 Usuariounidade::excluir($usuariounidade);
@@ -103,8 +103,8 @@ class UnidadeController extends Controller {
         }
         return $this->_view();
     }
-	public function alterar_permissao($id) {
-        $usuariounidade = Usuariounidade::get($id);
+	public function alterar_permissao($idUsuarioUnidade) {
+        $usuariounidade = Usuariounidade::get($idUsuarioUnidade);
         if ($usuariounidade) {
             try {
 					$usuariounidade->Permissao = $usuariounidade->Permissao == 2 ? 3 : 2;

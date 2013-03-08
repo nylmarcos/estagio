@@ -11,7 +11,10 @@
 </script>
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
-		<h1>Cis <a href="~/ci/autoriza"><small>Autorização</small></a></h1>
+		<h1>Cis <a href="~/ci/autoriza"><small>Autorização</small></a>
+			<a style="float: right;" href="javascript:void(0);" onclick="modalhelp()" class="btn btn-primary tool_tip" rel="tooltip" title="Ajuda"> <i class="icon-question-sign icon-white"></i></a>
+
+		</h1>
 	</div>
 </div>
 <div class="grid_12">
@@ -66,9 +69,9 @@
 								</td>
 							<?php else: ?>
 								<?php if ($ci->Autorizado == 1): ?>
-									<td style="width: 30px; text-align: center;"><span class="label label-success">Autorizado</span></td>
+									<td style="width: 30px; text-align: center;"><span class="label label-success">Autorizada</span></td>
 								<?php else: ?>
-									<td style="width: 30px; text-align: center;"><span class="label label-important">Não Autorizado</span></td>
+									<td style="width: 30px; text-align: center;"><span class="label label-important">Não Autorizada</span></td>
 								<?php endif ?>
 
 							<?php endif ?>
@@ -93,3 +96,49 @@
 			<a href="javascript:void(0);" class="btn" data-dismiss="modal">Fechar</a>
 		</div>
 	</div>
+
+<div id="modal-help" class="modal hide">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3 class="cliente-nome">AJUDA</h3>
+	</div>
+	<div class="modal-body">
+		<table id="" class="table table-bordered table-striped table-condensed">
+			<thead>
+				<tr>
+					<th style="text-align: center;">Imagem</th>
+					<th style="text-align: center;">Significado</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<img src="~/ajuda/autorizacao-1.png" />
+					</td>
+					<td>
+						CI Aguardando Autorização!
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img src="~/ajuda/autorizacao-3.png" />
+					</td>
+					<td>
+						CI Não Autorizada!
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img src="~/ajuda/autorizacao-2.png" />
+					</td>
+					<td>
+						CI Autorizada!
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="modal-footer">
+		<a href="javascript:void(0);" class="btn" data-dismiss="modal">Fechar</a>
+	</div>
+</div>

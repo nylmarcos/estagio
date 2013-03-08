@@ -34,13 +34,7 @@ class AdminController extends Controller {
 				}
 			} else {
 				$aba = 'notificacao';
-
-				$usuario->ReceberEmailNovaCI = isset($_POST['ReceberEmailNovaCI']) ? 1 : 0;
-				$usuario->ReceberEmailNovaObs = isset($_POST['ReceberEmailNovaObs']) ? 1 : 0;
-
-
-
-
+				$usuario->ReceberEmail = isset($_POST['ReceberEmail']) ? 1 : 0;
 				try {
 					Usuario::salvar($usuario);
 					$this->_flash('alert alert-success fade in', 'Opções de notificações salvas com sucesso');
@@ -70,7 +64,7 @@ class AdminController extends Controller {
 					Auth::set($usuario->EhAdmin == 1 ? "admin" : "usuario");
 					Session::set('usuario', $usuario);
 					$url = '~/ci/rascunho';
-					if (isset($_GET['forwarded']))
+					if (isset($_GET['forwarded']) && $_GET['forwarded'] != '')
 						$url = '~/' . $_GET['forwarded'];
 					$this->_redirect($url);
 				}

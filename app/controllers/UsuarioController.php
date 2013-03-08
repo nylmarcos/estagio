@@ -119,11 +119,11 @@ class UsuarioController extends Controller {
 		}
 	}
 
-	public function v($id, $p = 1) {
-		$usuario = Usuario::get($id);
+	public function v($idUsuario, $p = 1) {
+		$usuario = Usuario::get($idUsuario);
 		if ($usuario) {
 			$s = isset($_GET['s']) ? $_GET['s'] : '';
-			$unidades = Viewusuariounidade::listar($id,$p, $s);
+			$unidades = Viewusuariounidade::listar($idUsuario,$p, $s);
 			$this->_set('s', $s);
 			$this->_set('usuario', $usuario);
 			$this->_set('unidades', $unidades);
@@ -148,8 +148,8 @@ class UsuarioController extends Controller {
 			$this->_flash('erro', 'Vinculo não encontrada!');
 		}
 	}
-	public function excluir_vinculo($id) {
-        $usuariounidade = Usuariounidade::get($id);
+	public function excluir_vinculo($idUsuarioUnidade) {
+        $usuariounidade = Usuariounidade::get($idUsuarioUnidade);
         if ($usuariounidade) {
             try {
                 Usuariounidade::excluir($usuariounidade);

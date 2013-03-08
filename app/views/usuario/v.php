@@ -57,5 +57,5 @@
     </table>
 </div>
 <div class="grid_12" style="text-align: center;">
-	<?= Pagination::create('usuario/vincular/' . $usuario->Id, $unidades->Total, $p) ?>
+	<?= Pagination::create('usuario/v/' . $usuario->Id .'/', $unidades->Total, $p) ?>
 </div>

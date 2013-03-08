@@ -64,7 +64,8 @@
 		<h3> <?= $ci->Autorizado == 1 ? 'Autorizado por:' : 'Não autorizado por:'; ?> <?= $ci->NomeUsuarioAutorizacao ?>  </h3>
 	</div>
 <?php endif; ?>
-<a href="#modal-observacao" class="btn btn-primary" data-toggle="modal">Obs</a>
+<a href="#modal-observacao" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> Observação</a>
+<a href="~/ci/gerarpdf/<?= $ci->Id  ?>" class="btn btn-primary" data-toggle="modal"><i class="icon-print icon-white"></i></a>
 <?php if ($observacoes != null): ?>
 	<div class="grid_12">
 		<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">

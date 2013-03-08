@@ -18,12 +18,14 @@
 						$('#s2id_Atenciosamente > .select2-choice > span').html('Selecione');
 						$('#Atenciosamente').html(data.d.Conteudo);
 					}else{
-						if($(data.d.Conteudo).val() == IdUsuario)
+						if($(data.d.Conteudo).val() == IdUsuario){
 							$('#salvar_enviar').show();
-						else
+						}else{
 							$('#salvar_enviar').hide();
+						}							
 						$("#Atenciosamente").select2("disable");
 						$('#s2id_Atenciosamente > .select2-choice > span').html($(data.d.Conteudo).html());
+						$('#Atenciosamente').html(data.d.Conteudo);
 					}
 				});
 			}else{
@@ -44,7 +46,7 @@
 				
 				$("#modal-confirmacao > .modal-body").text("Tem certeza que deseja salvar e ENVIAR esta CI?");
 				$("#button-confirmar").attr("onclick", "submeter_form();");
-				$('#modal-confirmacao').modal('show')
+				$('#modal-confirmacao').modal('show');
 				return false;
 			});
 			;
@@ -58,7 +60,6 @@
 			$("#Atenciosamente").select2("disable");
 			Atenciosamente
 		}*/
-			
 	});
 	function submeter_form(){
 		$('#s-e').attr('name',"Salvar");
@@ -68,7 +69,7 @@
 </script>
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
-		<h1>CI <small>Cadastrar</small></h1>
+		<h1>CI <small> <?= ucfirst(strtolower(ACTION)) ?></small></h1>
 	</div>
 </div>
 <div class="grid_12">
@@ -166,7 +167,13 @@
 						<a class="btn tip" title="Justificar" href="javascript:void(0)" onclick="CKEDITOR.tools.callFunction(36, this); return false;"><i class="icon-align-justify"></i></a>
 					</div>
 				</div>
-				<textarea cols="80" id="editor" name="Conteudo" rows="10"><?= $ci->Conteudo ?>
+				<textarea cols="80" id="editor" name="Conteudo" rows="10">
+						<?php if (ACTION == 'cadastrar' && $ci->Conteudo == ''): ?>
+							<?= $html_modelo ?>
+						<?php else: ?>
+							<?= $ci->Conteudo ?>
+						<?php endif ?>
+						
 				</textarea>
 			</div>
 		</div>
@@ -178,8 +185,8 @@
 						<option value="<?= $usuario->IdUsuario ?>" <?= $ci->IdUsuarioAtenciosamente == $usuario->IdUsuario ? 'selected="selected"' : ""; ?> ><?= $usuario->NomeUsuario ?></option>
 					<?php endforeach ?>	
 				<?php else: ?>
-						
-						<option value="<?= Session::get('usuario')->Id ?>" <?= $ci->IdUsuarioAtenciosamente == Session::get('usuario')->Id ? 'selected="selected"' : ""; ?> ><?= Session::get('usuario')->Nome ?></option>
+
+					<option value="<?= Session::get('usuario')->Id ?>" <?= $ci->IdUsuarioAtenciosamente == Session::get('usuario')->Id ? 'selected="selected"' : ""; ?> ><?= Session::get('usuario')->Nome ?></option>
 				<?php endif ?>
 			</select>
 		</div>

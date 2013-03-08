@@ -4,7 +4,7 @@
 		$.get(root+'ci/modalvisualizar/'+id, function(data) {
 			//alert();
 			$("#modal-visualizacao > .modal-body").html(data.d.Conteudo);
-			if(enviar == 1){
+			/*if(enviar == 1){
 				$("#button-enviar").show();
 				$("#button-enviar").attr("href", "javascript:void(0);");
 				$("#button-enviar").attr("onclick", "modal("+id+", 'ci/enviar/','Tem certeza que deseja enviar esta CI?')");
@@ -13,7 +13,7 @@
 				$("#button-enviar").attr("href", "javascript:void(0);");
 			}
 				
-			
+			*/
 			$('#modal-visualizacao').modal('show');	
 		});
 	
@@ -96,6 +96,6 @@
 	</div>
 	<div class="modal-footer">
 		<a href="javascript:void(0);" class="btn" data-dismiss="modal">Fechar</a>
-		<a class="btn btn-primary" id="button-enviar">Enviar</a>
+		<!-- <a class="btn btn-primary" id="button-enviar">Enviar</a> -->
 	</div>
 </div>

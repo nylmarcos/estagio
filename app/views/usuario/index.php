@@ -1,6 +1,8 @@
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
-		<h1>Usuários <a href="~/usuario"><small>Lista</small></a></h1>
+		<h1>Usuários <a href="~/usuario"><small>Lista</small></a>
+		<a style="float: right;" href="javascript:void(0);" onclick="modalhelp()" class="btn btn-primary tool_tip" rel="tooltip" title="Ajuda"> <i class="icon-question-sign icon-white"></i></a>
+		</h1>
 	</div>
 </div>
 <div class="grid_12">
@@ -64,4 +66,66 @@
 </div>
 <div class="grid_12" style="text-align: center;">
     <?= Pagination::create('usuario/index/', $usuarios->Total, $p) ?>
+</div>
+
+<div id="modal-help" class="modal hide">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3 class="cliente-nome">AJUDA</h3>
+	</div>
+	<div class="modal-body">
+		<table id="" class="table table-bordered table-striped table-condensed">
+			<thead>
+				<tr>
+					<th style="text-align: center;">Imagem</th>
+					<th style="text-align: center;">Significado</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<img src="~/ajuda/usuario-lista-1.png" />
+					</td>
+					<td>
+						Usuário não Bloqueado, ao clicar o bloqueará!
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img src="~/ajuda/usuario-lista-2.png" />
+					</td>
+					<td>
+						Usuário Bloqueado, ao clicar o desbloqueará!
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img src="~/ajuda/usuario-lista-3.png" />
+					</td>
+					<td>
+						Vincular Usuário, ao clicar abrirá todas as unidades!
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img src="~/ajuda/usuario-lista-4.png" />
+					</td>
+					<td>
+						Usuário Comum do Sistema, ou seja, gerencia apenas CI!
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img src="~/ajuda/usuario-lista-5.png" />
+					</td>
+					<td>
+						Usuário Administrador do Sistema,ou seja, PODE gerenciar "Usuário" e "Unidade"!
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="modal-footer">
+		<a href="javascript:void(0);" class="btn" data-dismiss="modal">Fechar</a>
+	</div>
 </div>

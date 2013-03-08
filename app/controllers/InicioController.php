@@ -5,8 +5,5 @@ class InicioController extends AdminController
 	{
 		return $this->_view();
 	}
-	public function deferir_indeferir($idCi,$acao) {
-	
-	}
 	
 }

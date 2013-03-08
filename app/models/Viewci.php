@@ -8,6 +8,9 @@ class Viewci extends Model {
 
 	/** @Column(Type="Int") */
 	public $IdUsuarioAutor;
+	
+	/** @Column(Type="Int") */
+	public $Numero;
 
 	/** @Column(Type="Int") */
 	public $Data;
@@ -86,49 +89,14 @@ class Viewci extends Model {
 
 	/** @Column(Type="String") */
 	public $NomeUsuarioAutor;
-
+	
+	/** @Column(Type="String") */
+	public $NomeUsuarioAtenciosamente;
+	
 	 public static function get($Id) {
         $bd = Database::getInstance();
         return $bd->Viewci->where('Id = ?', $Id)->single();
     }
-	public static function listar($tipo, $idUsuario, $p, $s) {
-		$bd = Database::getInstance();
-		$p--;
-		$p = ($p < 0 ? 0 : $p) * 10;
-		$resultado = new stdClass;
-
-		if ($tipo == 1) {
-			if ($s) {
-				//$resultado->Dados = $bd->Ci->whereArray()->all();
-				$resultado->Dados = $bd->Ci->where('Assunto like ? AND Conteudo like ? ', '%' . $s . '%', '%' . $s . '%')->limit(10, $p)->orderby('Data ASC')->all();
-				$resultado->Total = count($resultado->Dados);
-			} else {
-				$resultado->Dados = $bd->Viewci->where('IdUsuarioAutor = ? OR IdDe = ? AND TipoDe = ? OR IdPara = ? AND TipoPara = ?', $idUsuario, $idUsuario, 1, $idUsuario, 1)->limit(10, $p)->orderby('Assunto ASC')->all();
-				$resultado->Total = $bd->Ci->count();
-			}
-		} else {
-			if ($s) {
-				$resultado->Dados = $bd->Ci->where('Conteudo like ?', '%' . $s . '%')->limit(10, $p)->orderby('Data ASC')->all();
-				$resultado->Total = count($resultado->Dados);
-			} else {
-				$resultado->Dados = $bd->Ci->limit(10, $p)->orderby('Data ASC')->all();
-				$resultado->Total = $bd->Ci->count();
-			}
-		}
-
-
-
-
-
-
-
-
-		$resultado->Dados = $bd->Viewci->limit(10, $p)->orderby('Data ASC')->all();
-		$resultado->Total = $bd->Viewci->count();
-
-		return $resultado;
-	}
-
 	public static function allAutorizacaoByUsuario($idUsuario, $p, $s, $i, $f) {
 		$bd = Database::getInstance();
 		$bd = Database::getInstance();
@@ -203,14 +171,14 @@ class Viewci extends Model {
 		$f = strtotime(preg_replace('@([\d]{2})/([\d]{2})/([\d]{4})@','$3-$2-$1 23:59:59',$f));
 		
 		$unidades = Usuariounidade::getByUsuario($idUsuario);
-		$unidades = Usuariounidade::getByUsuario($idUsuario);
 		$interrogacoes = array();
 		foreach ($unidades as $u) {
 			$interrogacoes[] = $u->IdUnidade;
 		}
+		if(!$interrogacoes)
+			$interrogacoes [] = 0;
+		
 		$resultado = new stdClass;
-		
-		
 		if ($i && $f) {
 			if ($s) {
 				$resultado->Dados = $bd->Viewci->where('Enviado = ? AND IdUsuarioAtenciosamente != ? AND IdUsuarioAutor != ? AND ((IdUsuarioAutorizacao IS NULL OR IdUsuarioAutorizacao = 0) OR (IdUsuarioAutorizacao IS NOT NULL AND Autorizado = 1)) AND (TipoPara = ? AND IdPara IN ('. implode(',', $interrogacoes) .') OR TipoPara = ? AND IdPara = ?) AND (Data >= ? AND Data <= ?) AND Conteudo like ?',1, $idUsuario, $idUsuario, 0, 1,$idUsuario, $i, $f, '%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
@@ -229,6 +197,21 @@ class Viewci extends Model {
 		}
 		return $resultado;
 	}
+	public static function count_recebidas_nao_lida()
+	{
+		$idUsuario = Session::get('usuario')->Id;
+		$unidades = Usuariounidade::getByUsuario($idUsuario);
+		$interrogacoes = array();
+		foreach ($unidades as $u) {
+			$interrogacoes[] = $u->IdUnidade;
+		}
+		if(!$interrogacoes)
+			$interrogacoes [] = 0;
+		
+		$bd = Database::getInstance();
+		return $bd->Viewci->where('Enviado = ? AND IdUsuarioAtenciosamente != ? AND IdUsuarioAutor != ? AND ((IdUsuarioAutorizacao IS NULL OR IdUsuarioAutorizacao = 0) OR (IdUsuarioAutorizacao IS NOT NULL AND Autorizado = 1)) AND (TipoPara = ? AND IdPara IN ('. implode(',', $interrogacoes) .') OR TipoPara = ? AND IdPara = ?) AND (IdUsuarioVisualizou IS NULL OR IdUsuarioVisualizou = ?)',1, $idUsuario, $idUsuario, 0, 1,$idUsuario,0)->count();
+		
+	}
 	public static function allEnviada($idUsuario, $p, $s, $i, $f) {
 		$bd = Database::getInstance();
 
@@ -243,31 +226,25 @@ class Viewci extends Model {
 		foreach ($unidades as $u) {
 			$interrogacoes[] = $u->IdUnidade;
 		}
-		//print_r($un);
-		//echo '<br>';
+		if(!$interrogacoes)
+			$interrogacoes [] = 0;
+		
 		$resultado = new stdClass;
-		$resultado->Dados = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .')) || (TipoDe = ? AND IdDe = ?)',0,1,$idUsuario)->limit(10, $p)->orderby('Data DESC')->all();
-		$resultado->Total = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .')) || (TipoDe = ? AND IdDe = ?)',0,1,$idUsuario)->count();
-		//print_r($resultado->Dados);
-		//pre($resultado);
-		//exit;
-		/*if ($i) {
+		if ($i && $f) {
 			if ($s) {
-				$resultado->Dados = $bd->Viewci->where('(Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?) AND (Data >= ? AND Data <= ?) AND Conteudo like ?)', 0, $idUsuario, $idUsuario, $i, $f, '%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
-				$resultado->Total = $bd->Viewci->where('(Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?) AND (Data >= ? AND Data <= ?) AND Conteudo like ?)', 0, $idUsuario, $idUsuario, $i, $f, '%' . $s . '%')->count();
-				
+				$resultado->Dados = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND (Data >= ? AND Data <= ?) AND Enviado = ? AND Conteudo like ?', 0, 1, $idUsuario, $i, $f, 1, '%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
+				$resultado->Total = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND (Data >= ? AND Data <= ?) AND Enviado = ? AND Conteudo like ?', 0, 1, $idUsuario, $i, $f, 1, '%' . $s . '%')->count();
 			} else {
-				$resultado->Dados = $bd->Viewci->where('Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?) AND Data >= ? AND Data <= ?', 0, $idUsuario, $idUsuario, $i, $f)->limit(10, $p)->orderby('Data DESC')->all();
-				$resultado->Total = $bd->Viewci->where('Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?) AND Data >= ? AND Data <= ?', 0, $idUsuario, $idUsuario, $i, $f)->count();
+				$resultado->Dados = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND (Data >= ? AND Data <= ?) AND Enviado = ?',0,1,$idUsuario, $i, $f, 1)->limit(10, $p)->orderby('Data DESC')->all();
+				$resultado->Total = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND (Data >= ? AND Data <= ?) AND Enviado = ?',0,1,$idUsuario, $i, $f, 1)->count();
 			}
 		} else if ($s) {
-			$resultado->Dados = $bd->Viewci->where('(Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?)) AND Conteudo like ?', 0, $idUsuario, $idUsuario, '%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
-			$resultado->Total = $bd->Viewci->where('(Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?)) AND Conteudo like ?', 0, $idUsuario, $idUsuario, '%' . $s . '%')->count();
+				$resultado->Dados = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND Enviado = ? AND Conteudo like ?', 0, 1, $idUsuario,1,'%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
+				$resultado->Total = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND Enviado = ? AND Conteudo like ?', 0, 1, $idUsuario,1,'%' . $s . '%')->count();
 		} else {
-			$resultado->Dados = $bd->Viewci->where('Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?)', 0, $idUsuario, $idUsuario)->limit(10, $p)->orderby('Data DESC')->all();
-			$resultado->Total = $bd->Viewci->where('Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?)', 0, $idUsuario, $idUsuario)->count();
-		}*/
+				$resultado->Dados = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND Enviado = ?',0, 1, $idUsuario,1)->limit(10, $p)->orderby('Data DESC')->all();
+				$resultado->Total = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND Enviado = ?',0, 1, $idUsuario,1)->count();
+		}
 		return $resultado;
 	}
-
 }

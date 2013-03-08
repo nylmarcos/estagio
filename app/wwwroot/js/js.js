@@ -6,6 +6,8 @@ $(document).ready(function(){
 	$('.tool_tip').tooltip('hide');
 	
 	
+	
+	
 	//---------------------------------------------------------------------------------------------------
 	var nowTemp = new Date();
 	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
@@ -23,8 +25,8 @@ $(document).ready(function(){
 		*/
 	   
 	   
-	   //var newDate = new Date(ev.date)
-	   //newDate.setDate(newDate.getDate() + 1);
+		//var newDate = new Date(ev.date)
+		//newDate.setDate(newDate.getDate() + 1);
 		
 		var checkout = $('#dpd2').datepicker({
 			onRender: function(date) {
@@ -53,7 +55,7 @@ $(document).ready(function(){
 		$('#dpd2')[0].focus();
 	}).data('datepicker');
 	
-//--------------------------------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------------------------------
 		
 	
 	
@@ -63,8 +65,9 @@ $(document).ready(function(){
 	
 	
 	
-	
-	
+	$('.button-nova-ci').click(function() {
+		$('#modal-modelos').modal('show');
+	});
 	
 	
 	
@@ -83,4 +86,7 @@ function modal(id, url, mensagem)
 	$("#button-confirmar").attr("href", root+url+id);
 	$('#modal-confirmacao').modal('show');
 }
-
+function modalhelp()
+{
+	$('#modal-help').modal('show');
+}
