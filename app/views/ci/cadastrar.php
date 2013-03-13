@@ -69,7 +69,9 @@
 </script>
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
-		<h1>CI <small> <?= ucfirst(strtolower(ACTION)) ?></small></h1>
+		<h1>CI <small> <?= ucfirst(strtolower(ACTION)) ?></small>
+		<a style="float: right;" href="javascript:history.back(1);" class="btn btn-primary tool_tip" rel="tooltip" title="Voltar"> <i class="icon-arrow-left icon-white"></i></a>
+		</h1>
 	</div>
 </div>
 <div class="grid_12">
@@ -89,11 +91,11 @@
 				<?php if (is_array($m_unidades)): ?>
 					<optgroup label="Unidade">
 						<?php foreach ($m_unidades as $unidade): ?>
-							<option value="<?= $unidade->IdUnidade . '-0' ?>" <?= $unidade->IdUnidade . '-0' == $ci->IdDe . '-0' ? 'selected="selected"' : ''; ?> ><?= $unidade->NomeUnidade ?></option>
+							<option value="<?= $unidade->IdUnidade . '-0' ?>" <?= $unidade->IdUnidade . '-0' == $ci->IdDe . '-' .$ci->TipoDe ? 'selected="selected"' : ''; ?> ><?= $unidade->NomeUnidade ?></option>
 						<?php endforeach ?>
 					</optgroup>
 					<optgroup label="EU">
-						<option value="<?= Session::get("usuario")->Id . '-1' ?>" <?= !$ci->IdDe || Session::get("usuario")->Id . '-1' == $ci->IdDe ? 'selected="selected"' : ''; ?> ><?= Session::get("usuario")->Nome ?></option>
+						<option value="<?= Session::get("usuario")->Id . '-1' ?>" <?= !$ci->IdDe || Session::get("usuario")->Id . '-' .$ci->TipoDe == $ci->IdDe ? 'selected="selected"' : ''; ?> ><?= Session::get("usuario")->Nome ?></option>
 					</optgroup>
 				<?php else: ?>
 					<option value="<?= Session::get("usuario")->Id . '-1' ?>" selected="selected"><?= Session::get("usuario")->Nome ?></option>
@@ -103,10 +105,15 @@
 		<div class="form_5">
 			<label for="Para">Para</label>
 			<select id="Para" class="populate" style="width: 380px; display: none;" name="IdPara">
+				
 				<?php if (is_array($unidades)): ?>
 					<optgroup label="Unidade">
 						<?php foreach ($unidades as $unidade): ?>
-							<option value="<?= $unidade->Id ?>-0"  <?= $unidade->Id . '-0' == $ci->IdPara . '-0' ? 'selected="selected"' : ''; ?>><?= $unidade->Nome ?></option>
+							<?php if ($unidade->Id .'-0' == $ci->IdPara . '-' .$ci->TipoPara): ?>
+								<option value="<?= $unidade->Id ?>-0"  selected="selected"><?= $unidade->Nome ?></option>
+							<?php else: ?>
+								<option value="<?= $unidade->Id ?>-0"><?= $unidade->Nome ?></option>
+							<?php endif ?>
 						<?php endforeach ?>
 					</optgroup>
 				<?php else: ?>
@@ -115,7 +122,12 @@
 				<?php if (is_array($usuarios)): ?>
 					<optgroup label="Funcionário">
 						<?php foreach ($usuarios as $usuario): ?>
-							<option value="<?= $usuario->Id ?>-1"  <?= $usuario->Id . '-1' == $ci->IdPara . '-1' ? 'selected="selected"' : ''; ?>><?= $usuario->Nome ?></option>
+							<?php if ($usuario->Id . '-1' == $ci->IdPara . '-1' .$ci->TipoPara): ?>
+								<option value="<?= $usuario->Id ?>-1"  selected="selected"><?= $usuario->Nome ?></option>
+							<?php else: ?>
+								<option value="<?= $usuario->Id ?>-1"><?= $usuario->Nome ?></option>
+							<?php endif ?>
+							
 						<?php endforeach ?>
 					</optgroup>
 				<?php else: ?>

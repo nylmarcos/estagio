@@ -11,7 +11,7 @@
 </script>
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
-		<h1>Cis <a href="~/ci/recebidas"><small>Recebidas</small></a>
+		<h1>CIs <a href="~/ci/recebidas"><small>Recebidas</small></a>
 			<a style="float: right;" href="javascript:void(0);" onclick="modalhelp()" class="btn btn-primary tool_tip" rel="tooltip" title="Ajuda"> <i class="icon-question-sign icon-white"></i></a>
 		</h1>
 	</div>
@@ -39,7 +39,6 @@
 	<table id="" class="table table-bordered table-striped table-condensed">
 		<thead>
 			<tr>
-				<th>Número</th>
 				<th>Data</th>
 				<th>De</th>
 				<th>Para</th>
@@ -49,7 +48,6 @@
 		<tbody>
 			<?php foreach ($cis_resposta_r->Dados as $ci): ?>
 				<tr>
-					<td><?= $ci->Numero . '/' . date('Y', $ci->Data) ?></td>
 					<td><?= date('d/m/Y', $ci->Data) ?></td>
 					<td><?= $ci->NomeDe ?></td>
 					<td><?= $ci->NomePara ?></td>

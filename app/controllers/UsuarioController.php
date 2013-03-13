@@ -29,16 +29,16 @@ class UsuarioController extends Controller {
 					$usuario = $this->_data(new Usuario());
 					$usuario->Bloqueado = 0;
 					Usuario::salvar($usuario);
-					$this->_flash('alert alert-info fade in', 'Usuário cadastrado com sucesso');
+					$this->_flash('alert alert-info fade in', 'Usuário cadastrado com sucesso!');
 					$this->_redirect('~/usuario/');
 				} else {
-					$this->_flash('alert alert-error fade in', "Os campos Senha e Confirmar Senha devem ser iguais");
+					$this->_flash('alert alert-error fade in', "Os campos Senha e Confirmar Senha devem ser iguais!");
 				}
 			} catch (ValidationException $e) {
 				$this->_flash('alert alert-error fade in', $e->getMessage());
 			} catch (Exception $e) {
 				//pre($e);
-				$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar salvar o usuário');
+				$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar salvar o usuário!');
 			}
 		}
 		$this->_set('usuario', $usuario);
@@ -49,10 +49,10 @@ class UsuarioController extends Controller {
 		if ($usuario) {
 			$usuario->EhAdmin = $usuario->EhAdmin == 1 ? 0 : 1;
 			Usuario::salvar($usuario);
-			$this->_flash('alert alert-success fade in', 'Permissão do usuário no sistema foi alterada com sucesso');
+			$this->_flash('alert alert-success fade in', 'Permissão do usuário no sistema foi alterada com sucesso!');
 		}
 		else{
-			$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a permissão do usuario no sistema');
+			$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a permissão do usuário no sistema!');
 		}
 		$this->_redirect('~/usuario/');
 	}
@@ -70,12 +70,12 @@ class UsuarioController extends Controller {
 						$usuario->Senha = $form->Senha;
 					try {
 						Usuario::salvar($usuario);
-						$this->_flash('alert alert-success fade in', 'Usuário alterado com sucesso');
+						$this->_flash('alert alert-success fade in', 'Usuário alterado com sucesso!');
 						$this->_redirect('~/usuario/');
 					} catch (ValidationException $e) {
 						$this->_flash('alert alert-error fade in', $e->getMessage());
 					} catch (Exception $e) {
-						$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a usuário');
+						$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a usuário!');
 					}
 				}
 			}
@@ -90,14 +90,14 @@ class UsuarioController extends Controller {
 		if ($usuario) {
 			try {
 				Usuario::excluir($usuario);
-				$this->_flash('alert alert-success fade in', 'Usuário excluído com sucesso');
+				$this->_flash('alert alert-success fade in', 'Usuário excluído com sucesso!');
 				$this->_redirect('~/usuario/');
 			} catch (Exception $e) {
 				pre($e);
-				$this->_flash('alert alert-error fade in', 'Erro ao tentar excluir usuario');
+				$this->_flash('alert alert-error fade in', 'Erro ao tentar excluir usuário!');
 			}
 		} else {
-			$this->_flash('alert alert-error fade in', 'Usuário não encontrado');
+			$this->_flash('alert alert-error fade in', 'Usuário não encontrado!');
 		}
 		$this->_redirect('~/usuario/');
 	}
@@ -110,11 +110,11 @@ class UsuarioController extends Controller {
 			$usuariounidade->IdUsuario = (int)$idUsuario;
 			$usuariounidade->Permissao = (int)$permissao;
 			Usuariounidade::salvar($usuariounidade);
-			$this->_flash('alert alert-info fade in', 'Vinculo criado com sucesso!');
+			$this->_flash('alert alert-info fade in', 'Vínculo criado com sucesso!');
 			$this->_redirect('~/usuario/v/'.$idUsuario);
 		} catch (Exception $e) {
 			pre($e);
-			$this->_flash('erro', 'Erro ao tentar vincular');
+			$this->_flash('erro', 'Erro ao tentar vincular usuário');
 			$this->_redirect('~/usuario/v/'.$idUsuario);
 		}
 	}
@@ -128,7 +128,7 @@ class UsuarioController extends Controller {
 			$this->_set('usuario', $usuario);
 			$this->_set('unidades', $unidades);
 		} else {
-			$this->_flash('erro', 'Usuario não encontrado');
+			$this->_flash('erro', 'Usuário não encontrado!');
 		}
 		return $this->_view();
 	}
@@ -145,7 +145,7 @@ class UsuarioController extends Controller {
 				$this->_flash('erro', 'Erro ao tentar alterar a permissão!');
 			}
 		} else {
-			$this->_flash('erro', 'Vinculo não encontrada!');
+			$this->_flash('erro', 'Vínculo não encontrada!');
 		}
 	}
 	public function excluir_vinculo($idUsuarioUnidade) {
@@ -153,14 +153,14 @@ class UsuarioController extends Controller {
         if ($usuariounidade) {
             try {
                 Usuariounidade::excluir($usuariounidade);
-                $this->_flash('alert alert-success fade in', 'Vinculo excluído com sucesso!');
+                $this->_flash('alert alert-success fade in', 'Vínculo excluído com sucesso!');
                 $this->_redirect('~/usuario/v/' . $usuariounidade->IdUsuario);
             } catch (Exception $e) {
 				
-                $this->_flash('erro', 'Erro ao tentar excluir Vinculo!');
+                $this->_flash('erro', 'Erro ao tentar excluir Vínculo!');
             }
         } else {
-            $this->_flash('erro', 'Vinculo não encontrada!');
+            $this->_flash('erro', 'Vínculo não encontrada!');
         }
         return $this->_view();
     }

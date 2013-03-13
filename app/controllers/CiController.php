@@ -1,6 +1,9 @@
 <?php
 
+date_default_timezone_set('America/Araguaina');
+
 class CiController extends AdminController {
+
 	public function modalvisualizar($id) {
 		$ci = Ci::get($id);
 		//echo ($ci->Conteudo);
@@ -13,42 +16,44 @@ class CiController extends AdminController {
 
 		$ci = Viewci::get($idCi);
 		if ($ci) {
-			$observacoes = Viewobservacao::allByCi($ci->Id);
-			$html = '<html><head> <link rel="Stylesheet" type="text/css" href="' . ROOT_VIRTUAL . '/css/style-cipdf.css" /> </head>' .
-					'<body>' .
-					'<table style="margin:auto;" class="bordasimples">' .
-					'<tbody>' .
-					'<tr>' .
-					'<th rowspan=4><img src="' . ROOT_VIRTUAL . 'img/logo-ulbra.png" width="50%"/></th>' .
-					'<td><b>Data:</b>' . date('d/m/Y', $ci->Data) . '</td>' .
-					'</tr>
-			<tr><td><b>Assunto: </b>' . $ci->Assunto . '</td></tr>' .
-					'<tr><td><b>De: </b>' . $ci->NomeDe . ' </td></tr>' .
-					'<tr><td><b>Para: </b>' . $ci->NomePara . '</td></tr>' .
-					'<tr><td colspan="2">' . $ci->Conteudo . '</td></tr>' .
-					'</tbody>' .
-					'</table >';
-			if ($observacoes) {
-				foreach ($observacoes as $ob) {
-					$html .= '<div style="margin: auto; width:80%;">' . $ob->Nome . '-' . date('d/m/Y H:m', $ob->Data) . '</div>' .
-							'<div style="margin: auto; width:80%;">' . $ob->Conteudo . '</div>';
+			$html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <link rel="Stylesheet" type="text/css" href="' . ROOT_VIRTUAL . '/css/style-cipdf.css" /> </head>';
+			for ($i = 1; $i <= 2; $i++) {
+				$observacoes = Viewobservacao::allByCi($ci->Id);
+				$html .= '<body><center> <b>' . $i . 'º Via </b> Data:' . date('d/m/Y H:i:s', time()) . '</center><table style="margin:auto;" class="bordasimples">' .
+						'<tbody>' .
+						'<tr>' .
+						'<th rowspan=4><img src="' . ROOT_VIRTUAL . 'img/logo-ulbra.png" width="50%"/></th>' .
+						'<td><b>Data: </b>' . date('d/m/Y', $ci->Data) . '</td>' .
+						'</tr>
+						<tr><td><b>Assunto: </b>' . $ci->Assunto . '</td></tr>' .
+						'<tr><td><b>De: </b>' . $ci->NomeDe . ' </td></tr>' .
+						'<tr><td><b>Para: </b>' . $ci->NomePara . '</td></tr>' .
+						'<tr><td colspan="2">' . $ci->Conteudo . '<br><br>Atenciosamente, <br><br><center>' . $ci->NomeUsuarioAtenciosamente . '</center><center>' . $ci->CargoUsuarioAtenciosamente . '</center><br></td></tr>' .
+						'</tbody>' .
+						'</table >';
+				if ($observacoes) {
+					$html .= '<center><h3>Observações</h3></center><table style="margin:auto;" class="bordasimples" width="80%"> <tbody>';
+					foreach ($observacoes as $ob) {
+						$html .= '
+						<tr>
+						  <td>' . $ob->Nome . '  -  ' . date('d/m/Y H:i', $ob->Data) . '</td>
+						  </tr><tr><td>' . $ob->Conteudo . '</td>
+						</tr>';
+					}
+					$html .= '</table>';
 				}
+				$html .= '<br><br><hr><br>';
 			}
 			$html .='</body></html>';
+			$dompdf = new DOMPDF();
+			$dompdf->load_html($html);
+			$dompdf->set_host('localhost');
+			$dompdf->set_protocol('http://');
+			$dompdf->render();
+			$dompdf->stream("sample.pdf");
 		} else {
 			$this->_flash('alert alert-error fade in', 'CI não encontrada');
 		}
-//	echo $html;
-		//exit;
-		$dompdf = new DOMPDF();
-		$dompdf->load_html($html);
-		$dompdf->set_host('localhost');
-		$dompdf->set_protocol('http://');
-		$dompdf->render();
-		$dompdf->stream("sample.pdf");
-
-		//$pdf = $dompdf->output();
-		//file_put_contents("arquivo.pdf", $pdf);
 		exit;
 	}
 
@@ -113,9 +118,6 @@ class CiController extends AdminController {
 
 	private static function get_modelo($modelo) {
 		switch ($modelo) {
-			case 1:
-				return '';
-				break;
 			case 2:
 				return '<table style="border-collapse: collapse; border:1px solid #000;" width="100%">
 			<tr style="border:1px solid #000;">
@@ -162,6 +164,28 @@ class CiController extends AdminController {
 			</tr>
 		</table>';
 				break;
+			case 3:
+				return '<table style="border-collapse: collapse; border:1px solid #000;" width="100%">
+				<tr style="border:1px solid #000;">
+					<td style="border:1px solid #000;"><b>QUANT</b></td>
+					<td style="border:1px solid #000;"><b>DISCRIMINAÇÃO DO MATERIAL </b> </td>
+				</tr>
+				<tr style="border:1px solid #000;">
+					<td style="border:1px solid #000;"><br></td>
+					<td style="border:1px solid #000;"><br></td>
+				</tr>
+				<tr style="border:1px solid #000;">
+					<td style="border:1px solid #000;"><br></td>
+					<td style="border:1px solid #000;"><br></td>
+				</tr>
+				<tr style="border:1px solid #000;">
+					<td style="border:1px solid #000;"><br></td>
+					<td style="border:1px solid #000;"><br></td>
+				</tr>
+				</table>';
+				break;
+			default:
+				return '';
 		}
 	}
 
@@ -211,28 +235,30 @@ class CiController extends AdminController {
 									}
 								}
 								Ci::salvar($ci);
-								$this->_flash('alert alert-success fade in', 'Ci cadastrada com sucesso');
-								if($ci->Enviado == 1)
+								if ($ci->Enviado == 1) {
+									$this->_flash('alert alert-success fade in', 'CI enviada com sucesso!');
 									$this->_redirect('~/ci/enviadas');
-								else
+								} else {
+									$this->_flash('alert alert-success fade in', 'CI salva como rascunho!');
 									$this->_redirect('~/ci/rascunho');
+								}
 							} else {
-								$this->_flash('alert alert-error fade in', 'Os campos "Para" e "Autorização" não podem ser iguais');
+								$this->_flash('alert alert-error fade in', 'Os campos "Para" e "Autorização" não podem ser iguais!');
 							}
 						} else {
-							$this->_flash('alert alert-error fade in', 'Os campos "Atenciosamente" e "Autorização" não podem ser iguais');
+							$this->_flash('alert alert-error fade in', 'Os campos "Atenciosamente" e "Autorização" não podem ser iguais!');
 						}
 					} else {
-						$this->_flash('alert alert-error fade in', 'O campo "Para" não pode ser uma unidade que vc pussui vinculo');
+						$this->_flash('alert alert-error fade in', 'O campo "Para" não pode ser uma unidade que você pussui vínculo!');
 					}
 				} else {
-					$this->_flash('alert alert-error fade in', 'Os campos "De" e "Para" não podem ser iguais');
+					$this->_flash('alert alert-error fade in', 'Os campos "De" e "Para" não podem ser iguais!');
 				}
 			} catch (ValidationException $e) {
 				$this->_flash('alert alert-error fade in', $e->getMessage());
 			} catch (Exception $e) {
 				//pre($e);
-				$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar salvar a ci');
+				$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar salvar a ci!');
 			}
 			if ($ci->TipoPara == 0)
 				$usuarios_u = Viewusuariounidade::allByIdUnidade((int) $IdDe_Tipo[0], 2);
@@ -319,28 +345,33 @@ class CiController extends AdminController {
 									}
 								}
 								Ci::salvar($ci);
-								$this->_flash('alert alert-info fade in', 'Ci cadastrada com sucesso');
-								$this->_redirect('~/ci/rascunho');
+								if ($ci->Enviado == 1) {
+									$this->_flash('alert alert-success fade in', 'CI enviada com sucesso!');
+									$this->_redirect('~/ci/enviadas');
+								} else {
+									$this->_flash('alert alert-success fade in', 'CI salva como rascunho!');
+									$this->_redirect('~/ci/rascunho');
+								}
 							} else {
-								$this->_flash('alert alert-error fade in', 'Os campos "Atenciosamente" e "Autorização" não podem ser iguais');
+								$this->_flash('alert alert-error fade in', 'Os campos "Atenciosamente" e "Autorização" não podem ser iguais!');
 							}
 						} else {
-							$this->_flash('alert alert-error fade in', 'Os campos "De" e "Para" não podem ser iguais');
+							$this->_flash('alert alert-error fade in', 'Os campos "De" e "Para" não podem ser iguais!');
 						}
 					} else {
-						$this->_flash('alert alert-error fade in', 'O campo "Para" não pode ser uma unidade que vc pussui vinculo');
+						$this->_flash('alert alert-error fade in', 'O campo "Para" não pode ser uma unidade que você pussui vínculo!');
 					}
 				} catch (ValidationException $e) {
 					$this->_flash('alert alert-error fade in', $e->getMessage());
 				} catch (Exception $e) {
 					pre($e);
-					$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar editar a ci');
+					$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar editar a CI!');
 				}
 			}
 			if ($ci->TipoPara == 0)
 				$usuarios_u = Viewusuariounidade::allByIdUnidade($ci->IdDe, 2);
 		}else {
-			$this->_flash('alert alert-error fade in', 'Ci não pode ser encontrada');
+			$this->_flash('alert alert-error fade in', 'CI não pode ser encontrada!');
 			$this->_redirect('~/ci/rascunho');
 		}
 		//print_r($usuarios_u);
@@ -365,16 +396,16 @@ class CiController extends AdminController {
 				if ($ci->Enviado == 0) {
 					Ci::excluir($ci);
 					Observacao::excluirAllByCi($ci);
-					$this->_flash('alert alert-info fade in', 'Ci exluída com sucesso');
+					$this->_flash('alert alert-success fade in', 'CI exluída com sucesso!');
 					$this->_redirect('~/ci/rascunho');
 				} else {
-					$this->_flash('alert alert-error fade in', 'Ci não pode ser excluida  com sucesso');
+					$this->_flash('alert alert-error fade in', 'CI NÃO PODE ser excluida!');
 				}
 			} else {
 				throw new AuthException("Sem permissão", 403);
 			}
 		} else {
-			$this->_flash('erro', 'Ci não encontrada!');
+			$this->_flash('erro', 'CI não encontrada!');
 		}
 	}
 
@@ -388,17 +419,17 @@ class CiController extends AdminController {
 					$n = Ci::get_ultima_ci($ci);
 					$ci->Numero = ++$n;
 					Ci::salvar($ci);
-					$this->_flash('alert alert-success fade in', 'Ci enviada com sucesso');
+					$this->_flash('alert alert-success fade in', 'CI enviada com sucesso!');
 					$this->_redirect('~/ci/rascunho');
 					// notificar por email
 				} else {
-					$this->_flash('alert alert-error fade in', 'Ci não pode ser enviada');
+					$this->_flash('alert alert-error fade in', 'CI NÃO PODE ser enviada!');
 				}
 			} else {
 				throw new AuthException("Sem permissão", 403);
 			}
 		} else {
-			$this->_flash('erro', 'Ci não encontrada!');
+			$this->_flash('erro', 'CI não encontrada!');
 		}
 		$this->_redirect('~/ci/rascunho');
 	}
@@ -468,7 +499,7 @@ class CiController extends AdminController {
 				throw new AuthException("Sem permissão", 403);
 			}
 		} else {
-			$this->_flash('erro', 'Ci não encontrada!');
+			$this->_flash('erro', 'CI não encontrada!');
 		}
 		return $this->_view();
 	}
@@ -477,11 +508,15 @@ class CiController extends AdminController {
 		$ci = Ci::get($idCi);
 		if ($ci) {
 			if ($ci->IdUsuarioAutorizacao == Session::get('usuario')->Id) {
-				$ci->Autorizado = (int) $acao;
-				Ci::salvar($ci);
-				$mensagem = $acao == 1 ? 'Ci autorizada com sucesso' : 'Ci não autorizada com sucesso';
-				$this->_flash('alert alert-success fade in', $mensagem);
-				//Enviar E-mail
+				if ($ci->Autorizado != 1 && $ci->Autorizado != 2) {
+					$ci->Autorizado = (int) $acao;
+					Ci::salvar($ci);
+					$mensagem = $acao == 1 ? 'Ci autorizada com sucesso!' : 'Ci não autorizada com sucesso!';
+					$this->_flash('alert alert-success fade in', $mensagem);
+					//Enviar E-mail
+				} else {
+					$this->_flash('alert alert-error fade in', 'Depois que uma CI é Autorizada ou Não autorizado, não é permitido alterar');
+				}
 				$this->_redirect('~/ci/autoriza');
 			}
 		}
@@ -492,44 +527,49 @@ class CiController extends AdminController {
 		$ci = Ci::get($idCi);
 
 		if ($ci) {
-			$per = false;
-			if ($ci->TipoPara == 0) {
-				if (Usuariounidade::virificar_permissao($ci->IdPara, Session::get('usuario')->Id))
-					$per = true;
-			}else {
-				if ($ci->IdPara == Session::get('usuario')->Id)
-					$per = true;
-			}
-			if ($per) {
-				$ci->IdUsuarioStatus = Session::get('usuario')->Id;
-				$ci->DataStatus = time();
-				$ci->Status = (int) $acao;
-				try {
-					Ci::salvar($ci);
-					$mensagem = $acao == 1 ? 'Ci deferida com sucesso' : 'Ci indefedida com sucesso';
-					$this->_flash('alert alert-success fade in', $mensagem);
-					
-					$emails ='';
-					if($ci->ParaPara == 0){
-						$emails .= Viewusuariounidade::allEmail($ci->IdPara);
-					}else{
-						$emails .= Session::get('usuario')->Login_Email;
-					}
-					//Enviar E-mail		
-				} catch (ValidationException $e) {
-					$this->_flash('alert alert-error fade in', $e->getMessage());
-				} catch (Exception $e) {
-					//pre($e);
-					$this->_flash('alert alert-error fade in', 'Ocorreu um erro');
+			if ($ci->DataStatus == 0 || $ci->DataStatus == null) {
+				$per = false;
+				if ($ci->TipoPara == 0) {
+					if (Usuariounidade::virificar_permissao($ci->IdPara, Session::get('usuario')->Id))
+						$per = true;
+				}else {
+					if ($ci->IdPara == Session::get('usuario')->Id)
+						$per = true;
 				}
+				if ($per) {
+					$ci->IdUsuarioStatus = Session::get('usuario')->Id;
+					$ci->DataStatus = time();
+					$ci->Status = (int) $acao;
+					try {
+						Ci::salvar($ci);
+						$mensagem = $acao == 1 ? 'CI marcada como EXECUTADA!' : 'CI marcada como NÃO EXECUTADA!';
+						$this->_flash('alert alert-success fade in', $mensagem);
 
-				$this->_redirect('~/ci/recebidas');
-			} else {
-				throw new AuthException("Sem permissão", 403);
+						$emails = '';
+						if ($ci->ParaPara == 0) {
+							$emails .= Viewusuariounidade::allEmail($ci->IdPara);
+						} else {
+							$emails .= Session::get('usuario')->Login_Email;
+						}
+						//Enviar E-mail		
+					} catch (ValidationException $e) {
+						$this->_flash('alert alert-error fade in', $e->getMessage());
+					} catch (Exception $e) {
+						//pre($e);
+						$this->_flash('alert alert-error fade in', 'Ocorreu um erro');
+					}
+
+					$this->_redirect('~/ci/recebidas');
+				} else {
+					throw new AuthException("Sem permissão", 403);
+				}
+			}else{
+				$this->_flash('alert alert-error fade in', 'O Status da CI não pode ser alterado mais de uma vez!');
 			}
 		} else {
-			$this->_flash('alert alert-error fade in', 'CI não encontrada');
+			$this->_flash('alert alert-error fade in', 'CI não encontrada!');
 		}
+		$this->_redirect('~/ci/recebidas');
 	}
 
 }

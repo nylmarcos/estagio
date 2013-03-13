@@ -24,13 +24,13 @@ class UnidadeController extends Controller {
             $unidade = $this->_data(new Unidade());
             try {
                 Unidade::salvar($unidade);
-                $this->_flash('alert alert-info fade in', 'Unidade cadastrada com sucesso');
+                $this->_flash('alert alert-info fade in', 'Unidade cadastrada com sucesso!');
                 $this->_redirect('~/unidade/');
             } catch (ValidationException $e) {
                 $this->_flash('alert alert-error fade in', $e->getMessage());
             } catch (Exception $e) {
                 //pre($e);
-                $this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar cadastrar a unidade');
+                $this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar cadastrar a unidade!');
             }
         }
         $this->_set('unidade', $unidade);
@@ -44,12 +44,12 @@ class UnidadeController extends Controller {
                 try {
                     $unidade = $this->_data($unidade);
                     Unidade::salvar($unidade);
-                    $this->_flash('alert alert-success fade in', 'Unidade alterada com sucesso');
+                    $this->_flash('alert alert-success fade in', 'Unidade alterada com sucesso!');
                     $this->_redirect('~/unidade/');
                 } catch (ValidationException $e) {
                     $this->_flash('alert alert-error fade in', $e->getMessage());
                 } catch (Exception $e) {
-                    $this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar editar a unidade');
+                    $this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar editar a unidade!');
                 }
             }
             $this->_set('unidade', $unidade);
@@ -93,13 +93,13 @@ class UnidadeController extends Controller {
         if ($usuariounidade) {
             try {
                 Usuariounidade::excluir($usuariounidade);
-                $this->_flash('alert alert-success fade in', 'Vinculo excluído com sucesso!');
+                $this->_flash('alert alert-success fade in', 'Vínculo excluído com sucesso!');
                 $this->_redirect('~/unidade/');
             } catch (Exception $e) {
-                $this->_flash('erro', 'Erro ao tentar excluir Vinculo!');
+                $this->_flash('erro', 'Erro ao tentar excluir Vínculo!');
             }
         } else {
-            $this->_flash('erro', 'Vinculo não encontrada!');
+            $this->_flash('erro', 'Vínculo não encontrada!');
         }
         return $this->_view();
     }
@@ -115,7 +115,7 @@ class UnidadeController extends Controller {
                 $this->_flash('erro', 'Erro ao tentar alterar a permissão!');
             }
         } else {
-            $this->_flash('erro', 'Vinculo não encontrada!');
+            $this->_flash('erro', 'Vínculo não encontrada!');
         }
     }
 

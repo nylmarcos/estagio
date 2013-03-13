@@ -7,13 +7,13 @@
 	<?= flash ?>
 </div>
 <div class="grid_12">
-	<h3>Nome: <small><?= $unidade->Nome ?></small></h3>
+	<h4>Nome: <small><?= $unidade->Nome ?></small></h4>
 </div>
 <div class="grid_6">
-	<h3>Email: <small><?= $unidade->Email ?></small></h3>
+	<h4>Email: <small><?= $unidade->Email ?></small></h4>
 </div>
 <div class="grid_6">
-	<h3>Telefone: <small><?= $unidade->Telefone ?></small></h3>
+	<h4>Telefone: <small><?= $unidade->Telefone ?></small></h4>
 </div>
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">

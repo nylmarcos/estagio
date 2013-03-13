@@ -19,7 +19,7 @@
 				</div>
 				<label class="checkbox">
 					<input type="checkbox" value="1" <?= $usuario->ReceberEmail ? "checked" :"" ?>  name="ReceberEmail" />
-					Receber e-mail quanto ao andamento das CIs que você tem vinculo
+					Receber e-mail 
 				</label>
 				<!--<label class="checkbox">
 					<input type="checkbox" value="1"  name="ReceberEmailNovaObs" />

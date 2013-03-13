@@ -14,7 +14,7 @@
  * Define o tipo do debug
  */
 Config::set('debug', array(
-	'type'	=> 'local', //pode assumir os seguintes valores: off, local, network e all
+	'type'	=> 'off', //pode assumir os seguintes valores: off, local, network e all
 	'query'	=> false //pode assumir false, para desativar, ou um valor para a query ?debug=seu-valor-seguro
 ));
 

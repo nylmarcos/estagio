@@ -21,7 +21,7 @@
 </script>
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
-		<h1>Cis <a href="~/ci/rascunho"><small>Rascunho</small></a></h1>
+		<h1>CIs <a href="~/ci/rascunho"><small>Rascunho</small></a></h1>
 	</div>
 </div>
 <div class="grid_12">

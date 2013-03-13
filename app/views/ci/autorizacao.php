@@ -11,9 +11,8 @@
 </script>
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
-		<h1>Cis <a href="~/ci/autoriza"><small>Autorização</small></a>
+		<h1>CIs <a href="~/ci/autoriza"><small>Autorização</small></a>
 			<a style="float: right;" href="javascript:void(0);" onclick="modalhelp()" class="btn btn-primary tool_tip" rel="tooltip" title="Ajuda"> <i class="icon-question-sign icon-white"></i></a>
-
 		</h1>
 	</div>
 </div>
@@ -35,7 +34,7 @@
             <input type="text" name="s" class="span2 search-query" value="<?= $s; ?>">
             <button type="submit" class="btn">Pesquisar</button>
         </div>
-    </form>
+    </form></div>
 	<?php if (is_array($cis_autorizacao->Dados)): ?>
 		<div class="grid_12">
 			<table id="" class="table table-bordered table-striped table-condensed">
@@ -55,7 +54,7 @@
 							<td><?= $ci->NomePara ?></td>
 
 
-							<td style="width: 30px; text-align: center;"><a href="javascript:void(0);" onclick="visualizar(<?= $ci->Id ?>)" class="btn btn-success tool_tip" rel="tooltip" title="Visualizar"> <i class="icon-eye-open icon-white"></i></a></td>
+							<td style="width: 30px; text-align: center;"><a href="~/ci/visualizar/<?= $ci->Id ?>" class="btn btn-success tool_tip" rel="tooltip" title="Visualizar"> <i class="icon-eye-open icon-white"></i></a></td>
 							<?php if (!$ci->Autorizado): ?>
 								<td style="width: 30px;">
 									<div class="btn-group">

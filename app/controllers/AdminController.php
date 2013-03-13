@@ -24,22 +24,22 @@ class AdminController extends Controller {
 							Usuario::salvar($u);
 							$this->_flash('alert alert-success fade in', 'Senha do usuário alterada com sucesso');
 						} catch (Exception $e) {
-							$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a senha do usuário');
+							$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a senha do usuário!');
 						}
 					} else {
-						$this->_flash('alert alert-error fade in', 'O campo Nova Senha e Confirmar Nova Senha devem ser iguais');
+						$this->_flash('alert alert-error fade in', 'O campo Nova Senha e Confirmar Nova Senha devem ser iguais!');
 					}
 				} else {
-					$this->_flash('alert alert-error fade in', 'Senha atual do usuário não confere');
+					$this->_flash('alert alert-error fade in', 'Senha atual do usuário não confere!');
 				}
 			} else {
 				$aba = 'notificacao';
 				$usuario->ReceberEmail = isset($_POST['ReceberEmail']) ? 1 : 0;
 				try {
 					Usuario::salvar($usuario);
-					$this->_flash('alert alert-success fade in', 'Opções de notificações salvas com sucesso');
+					$this->_flash('alert alert-success fade in', 'Opções de notificações salvas com sucesso!');
 				} catch (Exception $e) {
-					$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar salvar as opções de notificações');
+					$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar salvar as opções de notificações!');
 				}
 			}
 		}
@@ -59,7 +59,7 @@ class AdminController extends Controller {
 			$usuario = Usuario::logar($form->oab, $form->senha);
 			if ($usuario) {
 				if ($usuario->Bloqueado == 1) {
-					$this->_flash('alert alert-error fade in', 'Usuário bloqueado');
+					$this->_flash('alert alert-error fade in', 'Login ou Senha incorreta!'); //Usuário bloqueado!
 				} else {
 					Auth::set($usuario->EhAdmin == 1 ? "admin" : "usuario");
 					Session::set('usuario', $usuario);

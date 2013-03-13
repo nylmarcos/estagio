@@ -93,12 +93,14 @@ class Viewci extends Model {
 	/** @Column(Type="String") */
 	public $NomeUsuarioAtenciosamente;
 	
+	/** @Column(Type="String") */
+	public $CargoUsuarioAtenciosamente;
+	
 	 public static function get($Id) {
         $bd = Database::getInstance();
         return $bd->Viewci->where('Id = ?', $Id)->single();
     }
 	public static function allAutorizacaoByUsuario($idUsuario, $p, $s, $i, $f) {
-		$bd = Database::getInstance();
 		$bd = Database::getInstance();
 
 		$p--;
@@ -211,6 +213,11 @@ class Viewci extends Model {
 		$bd = Database::getInstance();
 		return $bd->Viewci->where('Enviado = ? AND IdUsuarioAtenciosamente != ? AND IdUsuarioAutor != ? AND ((IdUsuarioAutorizacao IS NULL OR IdUsuarioAutorizacao = 0) OR (IdUsuarioAutorizacao IS NOT NULL AND Autorizado = 1)) AND (TipoPara = ? AND IdPara IN ('. implode(',', $interrogacoes) .') OR TipoPara = ? AND IdPara = ?) AND (IdUsuarioVisualizou IS NULL OR IdUsuarioVisualizou = ?)',1, $idUsuario, $idUsuario, 0, 1,$idUsuario,0)->count();
 		
+	}
+	public static function count_autorizacao_pendentes() {
+		$idUsuario = Session::get('usuario')->Id;	
+		$bd = Database::getInstance();
+		return $bd->Viewci->where('IdUsuarioAutorizacao = ? AND Enviado = ? AND Autorizado IS NULL', $idUsuario,1)->count();
 	}
 	public static function allEnviada($idUsuario, $p, $s, $i, $f) {
 		$bd = Database::getInstance();

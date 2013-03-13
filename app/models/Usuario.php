@@ -20,7 +20,7 @@ class Usuario extends Model {
      */
     public $Login_Email;
 	
-	/** @Column(Type="String")
+	/** @Column(Type="String") //
      * @Required() 
      */
     public $Senha;
