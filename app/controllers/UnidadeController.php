@@ -24,7 +24,7 @@ class UnidadeController extends Controller {
             $unidade = $this->_data(new Unidade());
             try {
                 Unidade::salvar($unidade);
-                $this->_flash('alert alert-info fade in', 'Unidade cadastrada com sucesso!');
+                $this->_flash('alert alert-success fade in', 'Unidade cadastrada com sucesso!');
                 $this->_redirect('~/unidade/');
             } catch (ValidationException $e) {
                 $this->_flash('alert alert-error fade in', $e->getMessage());

@@ -27,9 +27,10 @@ class UsuarioController extends Controller {
 
 				if ($form->Senha == $form->ConfirmarSenha) {
 					$usuario = $this->_data(new Usuario());
+					$usuario->Senha = sha1($form->Senha);
 					$usuario->Bloqueado = 0;
 					Usuario::salvar($usuario);
-					$this->_flash('alert alert-info fade in', 'Usuário cadastrado com sucesso!');
+					$this->_flash('alert alert-success fade in', 'Usuário cadastrado com sucesso!');
 					$this->_redirect('~/usuario/');
 				} else {
 					$this->_flash('alert alert-error fade in', "Os campos Senha e Confirmar Senha devem ser iguais!");
@@ -37,8 +38,7 @@ class UsuarioController extends Controller {
 			} catch (ValidationException $e) {
 				$this->_flash('alert alert-error fade in', $e->getMessage());
 			} catch (Exception $e) {
-				//pre($e);
-				$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar salvar o usuário!');
+				$this->_flash('alert alert-error fade in', 'O email informado já está sendo utilizado por outro usuário!');
 			}
 		}
 		$this->_set('usuario', $usuario);
@@ -54,20 +54,17 @@ class UsuarioController extends Controller {
 		else{
 			$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a permissão do usuário no sistema!');
 		}
-		$this->_redirect('~/usuario/');
+		$this->_redirect('~/'.str_replace(SITE_URL, '', $_SERVER["HTTP_REFERER"]));
 	}
 	public function editar($id) {
 		$usuario = Usuario::get($id);
 		if ($usuario) {
 			if (is_post) {
 				$form = $this->_data();
-				if ($form->Senha == null || $form->Senha == $form->ConfirmarSenha) {
-					$usuario->Nome = $form->Nome;
-					$usuario->Login_Email = $form->Login_Email;
+				if (! isset($form->Senha)) {
 					$usuario->Cargo = $form->Cargo;
+					$usuario->Telefone = $form->Telefone;
 					$usuario->EhAdmin = (int) $form->EhAdmin;
-					if ($form->Senha)
-						$usuario->Senha = $form->Senha;
 					try {
 						Usuario::salvar($usuario);
 						$this->_flash('alert alert-success fade in', 'Usuário alterado com sucesso!');
@@ -76,6 +73,27 @@ class UsuarioController extends Controller {
 						$this->_flash('alert alert-error fade in', $e->getMessage());
 					} catch (Exception $e) {
 						$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a usuário!');
+					}
+				}else{
+					if($form->Senha == $form->ConfirmarSenha){
+						$usuario->Nome = $form->Nome;
+						$usuario->Login_Email = $form->Login_Email;
+						$usuario->Cargo = $form->Cargo;
+						$usuario->Telefone = $form->Telefone;
+						$usuario->EhAdmin = (int) $form->EhAdmin;
+						if (isset($form->Senha))
+							$usuario->Senha = sha1($form->Senha);
+						try {
+							Usuario::salvar($usuario);
+							$this->_flash('alert alert-success fade in', 'Usuário alterado com sucesso!');
+							$this->_redirect('~/usuario/');
+						} catch (ValidationException $e) {
+							$this->_flash('alert alert-error fade in', $e->getMessage());
+						} catch (Exception $e) {
+							$this->_flash('alert alert-error fade in', 'Ocorreu um erro ao tentar alterar a usuário!');
+						}
+					}else{
+						$this->_flash('alert alert-error fade in', "Os campos Senha e Confirmar Senha devem ser iguais!");
 					}
 				}
 			}
@@ -110,7 +128,7 @@ class UsuarioController extends Controller {
 			$usuariounidade->IdUsuario = (int)$idUsuario;
 			$usuariounidade->Permissao = (int)$permissao;
 			Usuariounidade::salvar($usuariounidade);
-			$this->_flash('alert alert-info fade in', 'Vínculo criado com sucesso!');
+			$this->_flash('alert alert-success fade in', 'Vínculo criado com sucesso!');
 			$this->_redirect('~/usuario/v/'.$idUsuario);
 		} catch (Exception $e) {
 			pre($e);
@@ -175,8 +193,7 @@ class UsuarioController extends Controller {
 				}else{
 					$this->_flash('alert alert-success fade in', 'Usuário desbloqueado com sucesso!');
 				}
-				
-				$this->_redirect('~/usuario');
+				$this->_redirect('~/'.str_replace(SITE_URL, '', $_SERVER["HTTP_REFERER"]));
 			} catch (Exception $e) {
 				$this->_flash('erro', 'Erro ao tentar bloquear ou desbloquear usuário!');
 			}

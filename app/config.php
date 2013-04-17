@@ -14,7 +14,7 @@
  * Define o tipo do debug
  */
 Config::set('debug', array(
-	'type'	=> 'off', //pode assumir os seguintes valores: off, local, network e all
+	'type'	=> 'local', //pode assumir os seguintes valores: off, local, network e all
 	'query'	=> false //pode assumir false, para desativar, ou um valor para a query ?debug=seu-valor-seguro
 ));
 
@@ -103,4 +103,4 @@ Config::set('cache', array(
 	'time'		=> -1
 ));
 
-//Import::register($dir); //Registrar diretórios de arquivos de código fonte, para autoload.
+Import::register('vendors'); //Registrar diretórios de arquivos de código fonte, para autoload.

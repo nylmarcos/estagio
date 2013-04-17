@@ -1,6 +1,9 @@
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
-		<h1>Vincular <small><?= $usuario->Nome ?></small></h1>
+		<h1>Vincular <small><?= $usuario->Nome ?></small>
+		<a style="float: right;" href="javascript:history.back(1);" class="btn btn-primary tool_tip" rel="tooltip" title="Voltar"> <i class="icon-arrow-left icon-white"></i></a>
+		</h1>
+		
 	</div>
 </div>
 <div class="grid_12">

@@ -56,6 +56,10 @@ class Usuario extends Model {
         $bd = Database::getInstance();
         return $bd->Usuario->where('Id = ?', $Id)->single();
     }
+	public static function getByEmail($email) {
+        $bd = Database::getInstance();
+        return $bd->Usuario->where('Login_Email = ?', $email)->single();
+    }
 
     public static function salvar(Usuario $usuario) {
         $bd = Database::getInstance();
@@ -84,6 +88,7 @@ class Usuario extends Model {
 		$p--;
 		$p = ($p < 0 ? 0 : $p) * 10;
         if ($s) {
+			$s = htmlentities($s, ENT_QUOTES, Config::get('charset'));
             $resultado->Dados = $bd->Usuario->where('Nome like ?', '%'.$s.'%')->limit(10, $p)->orderby('Nome ASC')->all();
             $resultado->Total = count($resultado->Dados);
         } else {

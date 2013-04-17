@@ -22,9 +22,9 @@
 			<label for="Telefone">Telefone</label>
 			<input type="text" name="Telefone" class="mask-telefone" id="Telefone" value="<?= $unidade->Telefone ?>">
 		</div>
-		<div class="">
+		<div class="form-actions" style="margin-top: 75px;">
 			<input type="submit" class="botao_login btn btn-primary" value="Salvar" />
-			<a href="~/unidade" class="btn">Cancelar</a>
+			<a href="javascript:history.back(1);" class="btn">Cancelar</a>
 		</div>
 	</form>
 </div>

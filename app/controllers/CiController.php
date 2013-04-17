@@ -10,40 +10,67 @@ class CiController extends AdminController {
 		//exit;
 		return $this->_json($ci);
 	}
-
 	public function gerarpdf($idCi) {
 		require_once("../helpers/dompdf/dompdf_config.inc.php");
 
 		$ci = Viewci::get($idCi);
 		if ($ci) {
 			$html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <link rel="Stylesheet" type="text/css" href="' . ROOT_VIRTUAL . '/css/style-cipdf.css" /> </head>';
-			for ($i = 1; $i <= 2; $i++) {
 				$observacoes = Viewobservacao::allByCi($ci->Id);
 				$html .= '<body><center> <b>' . $i . 'º Via </b> Data:' . date('d/m/Y H:i:s', time()) . '</center><table style="margin:auto;" class="bordasimples">' .
 						'<tbody>' .
 						'<tr>' .
-						'<th rowspan=4><img src="' . ROOT_VIRTUAL . 'img/logo-ulbra.png" width="50%"/></th>' .
-						'<td><b>Data: </b>' . date('d/m/Y', $ci->Data) . '</td>' .
+						'<td colspan="2"><center><img src="' . ROOT_VIRTUAL . 'img/logo-ulbra.png" width="50%"/></center></td>' .
 						'</tr>
-						<tr><td><b>Assunto: </b>' . $ci->Assunto . '</td></tr>' .
-						'<tr><td><b>De: </b>' . $ci->NomeDe . ' </td></tr>' .
-						'<tr><td><b>Para: </b>' . $ci->NomePara . '</td></tr>' .
+						<tr><td><b>Assunto: </b>' . $ci->Assunto . '</td><td><b>Data: </b>' . date('d/m/Y', $ci->Data) . '</td></tr>' .
+						'<tr><td><b>De: </b>' . $ci->NomeDe . ' </td><td><b>Para: </b>' . $ci->NomePara . '</td></tr>' .
 						'<tr><td colspan="2">' . $ci->Conteudo . '<br><br>Atenciosamente, <br><br><center>' . $ci->NomeUsuarioAtenciosamente . '</center><center>' . $ci->CargoUsuarioAtenciosamente . '</center><br></td></tr>' .
-						'</tbody>' .
-						'</table >';
+						'';
+				$html .= '
+						<tr bgcolor="#CCCCCC">
+						  <td colspan="2"><center>Informações</center></td>
+						</tr>';
+				if ($ci->IdUsuarioVisualizou){
+					$html .= '
+						<tr>
+						  <td colspan="2">Visualizada por: ' . $ci->NomeUsuarioVisualizou . '  -  ' . date('d/m/Y H:i', $ci->DataVisualizou) . '</td>
+						</tr>';
+				}
+				if ($ci->IdUsuarioAutorizacao != null && $ci->IdUsuarioAutorizacao != 0){
+					if($ci->Autorizado == 1){
+						$html .= '
+						<tr>
+						  <td colspan="2">Autorizada por: ' . $ci->NomeUsuarioAutorizacao . '</td>
+						</tr>';
+					}else if($ci->Autorizado == 2){
+						$html .= '
+						<tr>
+						  <td colspan="2">Não autorizada por : ' . $ci->NomeUsuarioAutorizacao . '</td>
+						</tr>';
+					}else{
+						$html .= '
+						<tr>
+						  <td colspan="2">Aguardando Autorização de: ' . $ci->NomeUsuarioAutorizacao . '</td>
+						</tr>';
+					}
+				}
+		
+					$html .= '</tbody></table>';
+		
+	
 				if ($observacoes) {
 					$html .= '<center><h3>Observações</h3></center><table style="margin:auto;" class="bordasimples" width="80%"> <tbody>';
 					foreach ($observacoes as $ob) {
 						$html .= '
 						<tr>
-						  <td>' . $ob->Nome . '  -  ' . date('d/m/Y H:i', $ob->Data) . '</td>
+						  <td bgcolor="#CCCCCC">' . $ob->Nome . '  -  ' . date('d/m/Y H:i', $ob->Data) . '</td>
 						  </tr><tr><td>' . $ob->Conteudo . '</td>
 						</tr>';
 					}
 					$html .= '</table>';
 				}
-				$html .= '<br><br><hr><br>';
-			}
+				
+				$html .= '<br><hr><br>';
 			$html .='</body></html>';
 			$dompdf = new DOMPDF();
 			$dompdf->load_html($html);
@@ -63,7 +90,6 @@ class CiController extends AdminController {
 		$f = isset($_GET['f']) ? $_GET['f'] : null;
 
 		$cis_rascunho = Viewci::allRascunho(Session::get('usuario')->Id, $p, $s, $i, $f);
-
 
 		$this->_set('s', isset($_GET['s']) ? $_GET['s'] : '');
 		$this->_set('i', $i);
@@ -235,12 +261,13 @@ class CiController extends AdminController {
 									}
 								}
 								Ci::salvar($ci);
+								
 								if ($ci->Enviado == 1) {
 									$this->_flash('alert alert-success fade in', 'CI enviada com sucesso!');
-									$this->_redirect('~/ci/enviadas');
+									//$this->_redirect('~/ci/enviadas');
 								} else {
 									$this->_flash('alert alert-success fade in', 'CI salva como rascunho!');
-									$this->_redirect('~/ci/rascunho');
+									//$this->_redirect('~/ci/rascunho');
 								}
 							} else {
 								$this->_flash('alert alert-error fade in', 'Os campos "Para" e "Autorização" não podem ser iguais!');

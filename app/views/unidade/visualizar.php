@@ -35,10 +35,8 @@
 					<tr>
 						<td style="width: 500px;"><?= $usuario->NomeUsuario ?></td>
 						<td><?= $usuario->TelefoneUsuario ?></td>
-
-						<td style="width: 30px;">
-							<a href="~/unidade/excluir/<?= $usuario->IdUsuarioUnidade ?>" class="btn btn-danger tool_tip" rel="tooltip" title="Excluir Vinculo"> <i class="icon-trash icon-white"></i></a>
-						</td>
+				
+						<td style="width: 30px;"><a href="javascript:void(0);" onclick="modal(<?= $usuario->IdUsuarioUnidade ?>,'usuario/excluir_vinculo/','Tem certeza que deseja excluir vínculo?')" class="btn btn-danger tool_tip" rel="tooltip" title="Excluir vinculo"> <i class="icon-trash icon-white"></i></a></td>
 						<?php if ($usuario->Permissao == 2): ?>
 						<td style="width: 30px;"><a href="javascript:void(0)" class="btn btn-success tool_tip disabled" rel="tooltip" title="Administrador">Administrador</a></td>
 						<td style="width: 30px;"><a href=<?= root_virtual."unidade/alterar_permissao/".$usuario->IdUsuarioUnidade ?> class="btn btn-primary tool_tip" rel="tooltip" title="comunn">Comum</a></td>

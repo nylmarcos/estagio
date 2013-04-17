@@ -70,7 +70,7 @@
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
 		<h1>CI <small> <?= ucfirst(strtolower(ACTION)) ?></small>
-		<a style="float: right;" href="javascript:history.back(1);" class="btn btn-primary tool_tip" rel="tooltip" title="Voltar"> <i class="icon-arrow-left icon-white"></i></a>
+			<a style="float: right;" href="javascript:history.back(1);" class="btn btn-primary tool_tip" rel="tooltip" title="Voltar"> <i class="icon-arrow-left icon-white"></i></a>
 		</h1>
 	</div>
 </div>
@@ -91,11 +91,11 @@
 				<?php if (is_array($m_unidades)): ?>
 					<optgroup label="Unidade">
 						<?php foreach ($m_unidades as $unidade): ?>
-							<option value="<?= $unidade->IdUnidade . '-0' ?>" <?= $unidade->IdUnidade . '-0' == $ci->IdDe . '-' .$ci->TipoDe ? 'selected="selected"' : ''; ?> ><?= $unidade->NomeUnidade ?></option>
+							<option value="<?= $unidade->IdUnidade . '-0' ?>" <?= $unidade->IdUnidade . '-0' == $ci->IdDe . '-' . $ci->TipoDe ? 'selected="selected"' : ''; ?> ><?= $unidade->NomeUnidade ?></option>
 						<?php endforeach ?>
 					</optgroup>
 					<optgroup label="EU">
-						<option value="<?= Session::get("usuario")->Id . '-1' ?>" <?= !$ci->IdDe || Session::get("usuario")->Id . '-' .$ci->TipoDe == $ci->IdDe ? 'selected="selected"' : ''; ?> ><?= Session::get("usuario")->Nome ?></option>
+						<option value="<?= Session::get("usuario")->Id . '-1' ?>" <?= !$ci->IdDe || Session::get("usuario")->Id . '-' . $ci->TipoDe == $ci->IdDe ? 'selected="selected"' : ''; ?> ><?= Session::get("usuario")->Nome ?></option>
 					</optgroup>
 				<?php else: ?>
 					<option value="<?= Session::get("usuario")->Id . '-1' ?>" selected="selected"><?= Session::get("usuario")->Nome ?></option>
@@ -105,11 +105,11 @@
 		<div class="form_5">
 			<label for="Para">Para</label>
 			<select id="Para" class="populate" style="width: 380px; display: none;" name="IdPara">
-				
+
 				<?php if (is_array($unidades)): ?>
 					<optgroup label="Unidade">
 						<?php foreach ($unidades as $unidade): ?>
-							<?php if ($unidade->Id .'-0' == $ci->IdPara . '-' .$ci->TipoPara): ?>
+							<?php if ($unidade->Id . '-0' == $ci->IdPara . '-' . $ci->TipoPara): ?>
 								<option value="<?= $unidade->Id ?>-0"  selected="selected"><?= $unidade->Nome ?></option>
 							<?php else: ?>
 								<option value="<?= $unidade->Id ?>-0"><?= $unidade->Nome ?></option>
@@ -122,12 +122,12 @@
 				<?php if (is_array($usuarios)): ?>
 					<optgroup label="Funcionário">
 						<?php foreach ($usuarios as $usuario): ?>
-							<?php if ($usuario->Id . '-1' == $ci->IdPara . '-1' .$ci->TipoPara): ?>
+							<?php if ($usuario->Id . '-1' == $ci->IdPara . '-1' . $ci->TipoPara): ?>
 								<option value="<?= $usuario->Id ?>-1"  selected="selected"><?= $usuario->Nome ?></option>
 							<?php else: ?>
 								<option value="<?= $usuario->Id ?>-1"><?= $usuario->Nome ?></option>
 							<?php endif ?>
-							
+
 						<?php endforeach ?>
 					</optgroup>
 				<?php else: ?>
@@ -180,17 +180,17 @@
 					</div>
 				</div>
 				<textarea cols="80" id="editor" name="Conteudo" rows="10">
-						<?php if (ACTION == 'cadastrar' && $ci->Conteudo == ''): ?>
-							<?= $html_modelo ?>
-						<?php else: ?>
-							<?= $ci->Conteudo ?>
-						<?php endif ?>
+					<?php if (ACTION == 'cadastrar' && $ci->Conteudo == ''): ?>
+						<?= $html_modelo ?>
+					<?php else: ?>
+						<?= $ci->Conteudo ?>
+					<?php endif ?>
 						
 				</textarea>
 			</div>
 		</div>
 		<div class="form_5">
-			<label for="Atenciosamente">Atenciosamente</label>
+			<label for="Atenciosamente">Remetente</label>
 			<select id="Atenciosamente" class="populate" style="width: 380px; display: none;" name="IdUsuarioAtenciosamente">
 				<?php if ($usuarios_u != null): ?>
 					<?php foreach ($usuarios_u as $usuario): ?>
@@ -215,11 +215,12 @@
 				<?php endif ?>
 			</select>
 		</div>
-		<input type="hidden" name="s-e" id="s-e" />
-		<a href="~/unidade" class="btn">Cancelar</a>
-		<input type="submit" class="botao_login btn btn-primary" name="Salvar" value="Salvar" />
-		<input type="submit" class="botao_login btn btn-primary" name="Salvar" id="salvar_enviar" value="Salvar e Enviar" />
-
+		<div class="form-actions" style="margin-top: 75px;">
+			<input type="hidden" name="s-e" id="s-e" />
+			<input type="submit" class="botao_login btn btn-primary" name="Salvar" value="Salvar" />
+			<input type="submit" class="botao_login btn btn-primary" name="Salvar" id="salvar_enviar" value="Salvar e Enviar" />
+			<a href="~/ci/rascunho" class="btn">Cancelar</a>
+		</div>
 	</form>
 </div>
 <script type="text/javascript" src="~/js/ckeditor/ckeditor.js"></script>

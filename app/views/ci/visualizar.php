@@ -22,8 +22,8 @@
 <div class="grid_12">
 	<div class="page-header" style="margin-top: 5px; margin-bottom: 10px;">
 		<h1>Ci <a href="~/ci/rascunho"><small>Visualizar</small></a>
-		
-		<a style="float: right;" href="javascript:history.back(1);" class="btn btn-primary tool_tip" rel="tooltip" title="Voltar"> <i class="icon-arrow-left icon-white"></i></a>
+
+			<a style="float: right;" href="javascript:history.back(1);" class="btn btn-primary tool_tip" rel="tooltip" title="Voltar"> <i class="icon-arrow-left icon-white"></i></a>
 		</h1>
 	</div>
 </div>
@@ -63,14 +63,25 @@
 		<h4>Visualizado: <small><?= $ci->NomeUsuarioVisualizou ?> </small> Data: <small><?= date('d/m/Y H:m', $ci->DataVisualizou) ?></small> </h4>
 	</div>
 <?php endif; ?>
-<?php if ($ci->IdUsuarioAutorizacao != null && $ci->IdUsuarioAutorizacao != 0 && $ci->Autorizado != 0 ): ?>
-	<div class="grid_12">
-		<h4> <?= $ci->Autorizado == 1 ? 'Autorizado por:' : 'Não autorizado por:'; ?> <small><?= $ci->NomeUsuarioAutorizacao ?> </small> </h4>
-	</div>
+<?php if ($ci->IdUsuarioAutorizacao != null && $ci->IdUsuarioAutorizacao != 0): ?>
+	<?php if ($ci->Autorizado == 0): ?>
+		<?php if (Session::get('usuario')->Id != $ci->IdUsuarioAutorizacao): ?>
+			<div class="grid_12">
+				<h4> Aguardando autorização de: <small><?= $ci->NomeUsuarioAutorizacao ?> </small> </h4>
+			</div>
+		<?php endif; ?>
+	<?php else: ?>
+		<div class="grid_12">
+			<h4> <?= $ci->Autorizado == 1 ? 'Autorizada por:' : 'Não autorizada por:'; ?> <small><?= $ci->NomeUsuarioAutorizacao ?> </small> </h4>
+		</div>
+	<?php endif; ?>
+
 <?php endif; ?>
 <div class="grid_12" style="margin-top: 5px;">
+	<?php if ($ci->IdUsuarioStatus == null): ?>
 	<a href="#modal-observacao" class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-white"></i> Observação</a>
-	<a href="~/ci/gerarpdf/<?= $ci->Id  ?>" class="btn btn-primary tool_tip" data-toggle="modal" rel="tooltip" title="Baixar CI"><i class=" icon-download-alt icon-white"></i></a>
+	<?php endif; ?>
+	<a href="~/ci/gerarpdf/<?= $ci->Id ?>" class="btn btn-primary tool_tip" data-toggle="modal" rel="tooltip" title="Baixar CI"><i class=" icon-download-alt icon-white"></i></a>
 </div>
 <?php if ($observacoes != null): ?>
 	<div class="grid_12">
@@ -80,15 +91,15 @@
 	</div>
 <?php endif; ?>
 <div class="grid_12">
-<?php foreach ($observacoes as $obs): ?>
-<div class="popover" style="position:inherit; width:inherit; margin-bottom: 5px;">
-            <div class="arrow"></div>
-            <h3 class="popover-title"><?= $obs->Nome ?> - <?= date('d/m/Y H:m', $obs->Data) ?></h3>
-            <div class="popover-content">
-              <p><?= $obs->Conteudo ?></p>
-            </div>
-          </div>
-<?php endforeach; ?>
+	<?php foreach ($observacoes as $obs): ?>
+		<div class="popover" style="position:inherit; width:inherit; margin-bottom: 5px;">
+			<div class="arrow"></div>
+			<h3 class="popover-title"><?= $obs->Nome ?> - <?= date('d/m/Y H:m', $obs->Data) ?></h3>
+			<div class="popover-content">
+				<p><?= $obs->Conteudo ?></p>
+			</div>
+		</div>
+	<?php endforeach; ?>
 </div>
 <div class="modal hide" id="modal-observacao" >
 	<div class="modal-header">
@@ -96,12 +107,12 @@
 		<h3 class="cliente-nome">OBSERVAÇÃO</h3>
 	</div>
 	<form method="POST" action="" style="margin: 0;padding: 0;">
-	<div class="modal-body">
-		<textarea rows="5" style="width: 510px;" name="Conteudo"></textarea>
-	</div>
-	<div class="modal-footer">
-		<a href="javascript:void(0);" class="btn" data-dismiss="modal">Cancelar</a>
-		<input type="submit" class="botao_login btn btn-primary" name="Salvar" value="Salvar" />
-	</div>
+		<div class="modal-body">
+			<textarea rows="5" style="width: 510px;" name="Conteudo"></textarea>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:void(0);" class="btn" data-dismiss="modal">Cancelar</a>
+			<input type="submit" class="botao_login btn btn-primary" name="Salvar" value="Salvar" />
+		</div>
 	</form>
 </div>

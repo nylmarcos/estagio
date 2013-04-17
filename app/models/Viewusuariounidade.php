@@ -53,14 +53,14 @@ class Viewusuariounidade extends Model {
 		$p = ($p < 0 ? 0 : $p) * 10;
 		$resultado = new stdClass;
 		if ($s) {
-			$resultado->Dados = $bd->viewusuariounidade->where('IdUsuario = ? OR IdUsuario IS NULL OR IdUnidade NOT IN (SELECT guu.IdUnidade FROM usuariounidade guu WHERE guu.IdUsuario = ?) AND NomeUnidade like ?', $IdUsuario, $IdUsuario, '%' . $s . '%')->limit(10, $p)->groupBy('IdUnidade')->orderby('NomeUnidade ASC')->all();
+			$resultado->Dados = $bd->viewusuariounidade->where('(IdUsuario = ? OR IdUsuario IS NULL OR IdUnidade NOT IN (SELECT guu.IdUnidade FROM usuariounidade guu WHERE guu.IdUsuario = ?)) AND NomeUnidade like ?', $IdUsuario, $IdUsuario, '%' . $s . '%')->limit(10, $p)->groupBy('IdUnidade')->orderby('NomeUnidade ASC')->all();
 			$resultado->Total = count($resultado->Dados);
 		} else {
 
 			$resultado->Dados = $bd->Viewusuariounidade->where('IdUsuario = ? OR IdUsuario IS NULL OR IdUnidade NOT IN (SELECT guu.IdUnidade FROM usuariounidade guu WHERE guu.IdUsuario = ?)', $IdUsuario, $IdUsuario)->groupBy('IdUnidade')->limit(10, $p)->all();
 			//Debug::show();
 			//exit(var_dump($resultado));
-			$resultado->Total = count($resultado->Dados);
+			$resultado->Total = count($bd->Viewusuariounidade->where('IdUsuario = ? OR IdUsuario IS NULL OR IdUnidade NOT IN (SELECT guu.IdUnidade FROM usuariounidade guu WHERE guu.IdUsuario = ?)', $IdUsuario, $IdUsuario)->groupBy('IdUnidade')->all());
 		}
 		return $resultado;
 	}

@@ -111,8 +111,9 @@ class Viewci extends Model {
 		//echo date('d/m/Y', $i) . '|';
 		//echo date('d/m/Y', $f);
 		$resultado = new stdClass;
-		if ($i) {
+		if ($i && $f) {
 			if ($s) {
+				$s = htmlentities($s, ENT_QUOTES, Config::get('charset'));
 				$resultado->Dados = $bd->Viewci->where('(IdUsuarioAutorizacao = ? AND Enviado = ? AND (Data >= ? AND Data <= ?) AND Conteudo like ?)', $idUsuario, 1, $i, $f, '%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
 				$resultado->Total = $bd->Viewci->where('(IdUsuarioAutorizacao = ? AND Enviado = ? AND (Data >= ? AND Data <= ?) AND Conteudo like ?)', $idUsuario, 1, $i, $f, '%' . $s . '%')->count();
 				
@@ -121,6 +122,7 @@ class Viewci extends Model {
 				$resultado->Total = $bd->Viewci->where('IdUsuarioAutorizacao = ? AND Enviado = ? AND Data >= ? AND Data <= ?', $idUsuario, 1, $i, $f)->count();
 			}
 		} else if ($s) {
+			$s = htmlentities($s, ENT_QUOTES, Config::get('charset'));
 			$resultado->Dados = $bd->Viewci->where('IdUsuarioAutorizacao = ? AND Enviado = ? AND Conteudo like ?', $idUsuario, 1, '%' . $s . '%' )->limit(10, $p)->orderby('Data DESC')->all();
 			$resultado->Total = $bd->Viewci->where('IdUsuarioAutorizacao = ? AND Enviado = ? AND Conteudo like ?', $idUsuario, 1, '%' . $s . '%')->count();
 		} else {
@@ -144,8 +146,9 @@ class Viewci extends Model {
 		//echo date('d/m/Y', $i) . '|';
 		//echo date('d/m/Y', $f);
 		$resultado = new stdClass;
-		if ($i) {
+		if ($i && $f) {
 			if ($s) {
+				$s = htmlentities($s, ENT_QUOTES, Config::get('charset'));
 				$resultado->Dados = $bd->Viewci->where('(Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?) AND (Data >= ? AND Data <= ?) AND Conteudo like ?)', 0, $idUsuario, $idUsuario, $i, $f, '%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
 				$resultado->Total = $bd->Viewci->where('(Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?) AND (Data >= ? AND Data <= ?) AND Conteudo like ?)', 0, $idUsuario, $idUsuario, $i, $f, '%' . $s . '%')->count();
 				
@@ -154,12 +157,15 @@ class Viewci extends Model {
 				$resultado->Total = $bd->Viewci->where('Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?) AND Data >= ? AND Data <= ?', 0, $idUsuario, $idUsuario, $i, $f)->count();
 			}
 		} else if ($s) {
+			$s = htmlentities($s, ENT_QUOTES, Config::get('charset'));
 			$resultado->Dados = $bd->Viewci->where('(Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?)) AND Conteudo like ?', 0, $idUsuario, $idUsuario, '%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
 			$resultado->Total = $bd->Viewci->where('(Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?)) AND Conteudo like ?', 0, $idUsuario, $idUsuario, '%' . $s . '%')->count();
 		} else {
-			$resultado->Dados = $bd->Viewci->where('Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?)', 0, $idUsuario, $idUsuario)->limit(10, $p)->orderby('Data DESC')->all();
-			$resultado->Total = $bd->Viewci->where('Enviado = ? AND (IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?)', 0, $idUsuario, $idUsuario)->count();
+			$resultado->Dados = $bd->Viewci->where('(IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?) AND Enviado = ?', $idUsuario, $idUsuario, 0)->limit(10, $p)->orderby('Data DESC')->all();
+			$resultado->Total = $bd->Viewci->where('(IdUsuarioAutor = ? OR IdUsuarioAtenciosamente = ?) AND Enviado = ?', $idUsuario, $idUsuario, 0)->count();
 		}
+		//print_r($resultado);
+		//exit;
 		return $resultado;
 	}
 	
@@ -183,6 +189,7 @@ class Viewci extends Model {
 		$resultado = new stdClass;
 		if ($i && $f) {
 			if ($s) {
+				$s = htmlentities($s, ENT_QUOTES, Config::get('charset'));
 				$resultado->Dados = $bd->Viewci->where('Enviado = ? AND IdUsuarioAtenciosamente != ? AND IdUsuarioAutor != ? AND ((IdUsuarioAutorizacao IS NULL OR IdUsuarioAutorizacao = 0) OR (IdUsuarioAutorizacao IS NOT NULL AND Autorizado = 1)) AND (TipoPara = ? AND IdPara IN ('. implode(',', $interrogacoes) .') OR TipoPara = ? AND IdPara = ?) AND (Data >= ? AND Data <= ?) AND Conteudo like ?',1, $idUsuario, $idUsuario, 0, 1,$idUsuario, $i, $f, '%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
 				$resultado->Total = $bd->Viewci->where('Enviado = ? AND IdUsuarioAtenciosamente != ? AND IdUsuarioAutor != ? AND ((IdUsuarioAutorizacao IS NULL OR IdUsuarioAutorizacao = 0) OR (IdUsuarioAutorizacao IS NOT NULL AND Autorizado = 1)) AND (TipoPara = ? AND IdPara IN ('. implode(',', $interrogacoes) .') OR TipoPara = ? AND IdPara = ?) AND (Data >= ? AND Data <= ?) AND Conteudo like ?',1, $idUsuario, $idUsuario, 0, 1,$idUsuario, $i, $f, '%' . $s . '%')->count();
 				
@@ -191,11 +198,12 @@ class Viewci extends Model {
 					$resultado->Total = $bd->Viewci->where('Enviado = ? AND IdUsuarioAtenciosamente != ? AND IdUsuarioAutor != ? AND ((IdUsuarioAutorizacao IS NULL OR IdUsuarioAutorizacao = 0) OR (IdUsuarioAutorizacao IS NOT NULL AND Autorizado = 1)) AND (TipoPara = ? AND IdPara IN ('. implode(',', $interrogacoes) .') OR TipoPara = ? AND IdPara = ?) AND (Data >= ? AND Data <= ?)',1, $idUsuario, $idUsuario, 0, 1,$idUsuario, $i, $f)->count();
 			}
 		} else if ($s) {
+				$s = htmlentities($s, ENT_QUOTES, Config::get('charset'));
 				$resultado->Dados = $bd->Viewci->where('Enviado = ? AND IdUsuarioAtenciosamente != ? AND IdUsuarioAutor != ? AND ((IdUsuarioAutorizacao IS NULL OR IdUsuarioAutorizacao = 0) OR (IdUsuarioAutorizacao IS NOT NULL AND Autorizado = 1)) AND (TipoPara = ? AND IdPara IN ('. implode(',', $interrogacoes) .') OR TipoPara = ? AND IdPara = ?) AND Conteudo like ?',1, $idUsuario, $idUsuario, 0, 1,$idUsuario, '%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
 				$resultado->Total = $bd->Viewci->where('Enviado = ? AND IdUsuarioAtenciosamente != ? AND IdUsuarioAutor != ? AND ((IdUsuarioAutorizacao IS NULL OR IdUsuarioAutorizacao = 0) OR (IdUsuarioAutorizacao IS NOT NULL AND Autorizado = 1)) AND (TipoPara = ? AND IdPara IN ('. implode(',', $interrogacoes) .') OR TipoPara = ? AND IdPara = ?) AND Conteudo like ?',1, $idUsuario, $idUsuario, 0, 1,$idUsuario, '%' . $s . '%')->count();
 		} else {
 			$resultado->Dados = $bd->Viewci->where('Enviado = ? AND IdUsuarioAtenciosamente != ? AND IdUsuarioAutor != ? AND ((IdUsuarioAutorizacao IS NULL OR IdUsuarioAutorizacao = 0) OR (IdUsuarioAutorizacao IS NOT NULL AND Autorizado = 1)) AND (TipoPara = ? AND IdPara IN ('. implode(',', $interrogacoes) .') OR TipoPara = ? AND IdPara = ?)',1, $idUsuario, $idUsuario, 0, 1,$idUsuario)->limit(10, $p)->orderby('Data DESC')->all();
-		$resultado->Total = $bd->Viewci->where('Enviado = ? AND IdUsuarioAtenciosamente != ? AND IdUsuarioAutor != ? AND ((IdUsuarioAutorizacao IS NULL OR IdUsuarioAutorizacao = 0) OR (IdUsuarioAutorizacao IS NOT NULL AND Autorizado = 1)) AND (TipoPara = ? AND IdPara IN ('. implode(',', $interrogacoes) .') OR TipoPara = ? AND IdPara = ?)',1, $idUsuario, $idUsuario, 0, 1,$idUsuario)->count();
+			$resultado->Total = $bd->Viewci->where('Enviado = ? AND IdUsuarioAtenciosamente != ? AND IdUsuarioAutor != ? AND ((IdUsuarioAutorizacao IS NULL OR IdUsuarioAutorizacao = 0) OR (IdUsuarioAutorizacao IS NOT NULL AND Autorizado = 1)) AND (TipoPara = ? AND IdPara IN ('. implode(',', $interrogacoes) .') OR TipoPara = ? AND IdPara = ?)',1, $idUsuario, $idUsuario, 0, 1,$idUsuario)->count();
 		}
 		return $resultado;
 	}
@@ -239,6 +247,7 @@ class Viewci extends Model {
 		$resultado = new stdClass;
 		if ($i && $f) {
 			if ($s) {
+				$s = htmlentities($s, ENT_QUOTES, Config::get('charset'));
 				$resultado->Dados = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND (Data >= ? AND Data <= ?) AND Enviado = ? AND Conteudo like ?', 0, 1, $idUsuario, $i, $f, 1, '%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
 				$resultado->Total = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND (Data >= ? AND Data <= ?) AND Enviado = ? AND Conteudo like ?', 0, 1, $idUsuario, $i, $f, 1, '%' . $s . '%')->count();
 			} else {
@@ -246,6 +255,7 @@ class Viewci extends Model {
 				$resultado->Total = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND (Data >= ? AND Data <= ?) AND Enviado = ?',0,1,$idUsuario, $i, $f, 1)->count();
 			}
 		} else if ($s) {
+				$s = htmlentities($s, ENT_QUOTES, Config::get('charset'));
 				$resultado->Dados = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND Enviado = ? AND Conteudo like ?', 0, 1, $idUsuario,1,'%' . $s . '%')->limit(10, $p)->orderby('Data DESC')->all();
 				$resultado->Total = $bd->Viewci->where('(TipoDe = ? AND IdDe IN ('. implode(',', $interrogacoes) .') || (TipoDe = ? AND IdDe = ?)) AND Enviado = ? AND Conteudo like ?', 0, 1, $idUsuario,1,'%' . $s . '%')->count();
 		} else {

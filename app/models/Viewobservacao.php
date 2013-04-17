@@ -30,6 +30,6 @@ class Viewobservacao extends Model {
 	
 	public static function allByCi($idCi) {
         $bd = Database::getInstance();
-        return $bd->Viewobservacao->where('IdCi = ?', $idCi)->all();
+        return $bd->Viewobservacao->where('IdCi = ?', $idCi)->orderby('Data DESC')->all();
     }
 }
