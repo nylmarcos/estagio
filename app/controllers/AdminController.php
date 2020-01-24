@@ -36,6 +36,7 @@ class AdminController extends Controller {
 				$aba = 'notificacao';
 				$usuario->ReceberEmail = isset($_POST['ReceberEmail']) ? 1 : 0;
 				$usuario->Telefone = $_POST['Telefone'];
+				$usuario->Nome = $_POST['Nome'];
 				$usuario->Cargo = $_POST['Cargo'];
 				try {
 					Usuario::salvar($usuario);
@@ -54,10 +55,10 @@ class AdminController extends Controller {
 	public function login() {
 		$client = new Google_Client();
 		$client->setApplicationName("Ceulp/Ulbra - CI");
-		$client->setClientId('97042401106.apps.googleusercontent.com');
-		$client->setClientSecret('sqCr4mewrJAWfp9SrRTJfL8_');
+		$client->setClientId('97042401106-o2lclrbkfato9gf2pnbo8v78vu939fus.apps.googleusercontent.com');
+		$client->setClientSecret('2L5D9P3ppu3l7vQdtY0o6sUN');
 		$client->setRedirectUri('http://localhost/estagio/admin/login');
-		$client->setDeveloperKey('97042401106@developer.gserviceaccount.com');
+		$client->setDeveloperKey('97042401106-o2lclrbkfato9gf2pnbo8v78vu939fus@developer.gserviceaccount.com');
 		$oauth2 = new Google_Oauth2Service($client);
 
 		if (isset($_GET['code'])) {
@@ -110,6 +111,7 @@ class AdminController extends Controller {
 			}else {
 				$authUrl = $client->createAuthUrl();
 				$this->_flash('alert alert-error fade in', 'Apenas contas do domínio <b>@ceulp.edu.br</b> possui permissão para acessar este aplicativo!'); //Usuário do gmail
+				$this->_redirect('~/admin/login');
 			}
 		} else {
 			$authUrl = $client->createAuthUrl();

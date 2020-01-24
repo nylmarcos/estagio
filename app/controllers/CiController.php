@@ -17,10 +17,10 @@ class CiController extends AdminController {
 		if ($ci) {
 			$html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <link rel="Stylesheet" type="text/css" href="' . ROOT_VIRTUAL . '/css/style-cipdf.css" /> </head>';
 				$observacoes = Viewobservacao::allByCi($ci->Id);
-				$html .= '<body><center> <b>' . $i . 'º Via </b> Data:' . date('d/m/Y H:i:s', time()) . '</center><table style="margin:auto;" class="bordasimples">' .
+				$html .= '<body><center> <b>Data:</b> ' . date('d/m/Y H:i:s', time()) . '</center><table style="margin:auto;" class="bordasimples">' .
 						'<tbody>' .
 						'<tr>' .
-						'<td colspan="2"><center><img src="' . ROOT_VIRTUAL . 'img/logo-ulbra.png" width="50%"/></center></td>' .
+						'<td colspan="2"><center><img src="' . ROOT_VIRTUAL . 'img/logo-ulbra.png" /></center></td>' .
 						'</tr>
 						<tr><td><b>Assunto: </b>' . $ci->Assunto . '</td><td><b>Data: </b>' . date('d/m/Y', $ci->Data) . '</td></tr>' .
 						'<tr><td><b>De: </b>' . $ci->NomeDe . ' </td><td><b>Para: </b>' . $ci->NomePara . '</td></tr>' .
@@ -188,7 +188,7 @@ class CiController extends AdminController {
 					<b>Comentários: </b><br /><br />
 				</td>
 			</tr>
-		</table>';
+			</table>';
 				break;
 			case 3:
 				return '<table style="border-collapse: collapse; border:1px solid #000;" width="100%">

@@ -17,12 +17,16 @@
 	<div class="tab-content" style="width: 760px; margin-left: 5px;">
 		<div class="tab-pane <?= $aba == "notificacao" || $aba == "padrao" ? "active" : "" ?>" id="cn" >
 			<form action="" method="post">
-				<legend>Email</legend>
+				<!--<legend>Email</legend>
 				<label class="checkbox">
-					<input type="checkbox" value="1" <?= $usuario->ReceberEmail ? "checked" :"" ?>  name="ReceberEmail" />
+					<input type="checkbox" value="1"  //$usuario->ReceberEmail ? "checked" :""   name="ReceberEmail" />
 					Receber e-mail 
-				</label>
+				</label> -->
 				<legend>Dados</legend>
+				<div class="form_10">
+					<label for="Telefone">Nome</label>
+					<input type="text" name="Nome"  id="Nome" value="<?= $usuario->Nome ?>">
+				</div>
 				<div class="form_5">
 					<label for="Telefone">Telefone</label>
 					<input type="text" name="Telefone" class="mask-telefone" id="Telefone" value="<?= $usuario->Telefone ?>">

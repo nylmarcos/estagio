@@ -1,4 +1,4 @@
-<script typo="text/javascript">
+<script type="text/javascript">
 	var nome = '<?= Session::get('usuario')->Nome; ?>';
 	var IdUsuario = '<?= Session::get('usuario')->Id; ?>';
 	var actionatual = '<?= ACTION ?>';
