@@ -56,7 +56,7 @@ class AdminController extends Controller {
 		$client = new Google_Client();
 		$client->setApplicationName("Ceulp/Ulbra - CI");
 		$client->setClientId('97042401106-o2lclrbkfato9gf2pnbo8v78vu939fus.apps.googleusercontent.com');
-		$client->setClientSecret('2L5D9P3ppu3l7vQdtY0o6sUN');
+		$client->setClientSecret('');
 		$client->setRedirectUri('http://localhost/estagio/admin/login');
 		$client->setDeveloperKey('97042401106-o2lclrbkfato9gf2pnbo8v78vu939fus@developer.gserviceaccount.com');
 		$oauth2 = new Google_Oauth2Service($client);
